@@ -381,9 +381,20 @@ void InvShiftRows(unsigned char* state)
 
 void MixColumns(unsigned char* state)
 {
+	/*
+		16 bytes of plain text is multiplied byte special matrix. Look-up tables mul2 and mul3 are implemented for speed and convenience
+
+		Plain Text:					Special Matrix:				Products XORd together:		res = Result of calculation.
+																(1st 4 bytes with top row)	The same is done for all rows/cols
+
+		|  P |  n |  x |  l |	.	|  2 |  3 |  1 |  1 |	=>	(P*2)+(l*3)+(a*1)+(i*1) =>  |res|   |   |   |
+		|  l |    |  t |  o |   	|  1 |  2 |  3 |  1 |									|   |   |   |   |
+		|  a |  T |    |  c |		|  1 |  1 |  2 |  3 |									|   |   |   |   |
+		|  i |  e |  B |  k |   	|  3 |  1 |  1 |  2 |									|   |   |   |   |
+	*/
 	unsigned char tmp[16];
 
-	tmp[0] = (unsigned char)(mul2[state[0]] ^ mul3[state[1]] ^ state[2] ^ state[3]);
+	tmp[0] = (unsigned char)(mul2[state[0]] ^ mul3[state[1]] ^ state[2] ^ state[3]);	//This line is represented in above explanation
 	tmp[1] = (unsigned char)(state[0] ^ mul2[state[1]] ^ mul3[state[2]] ^ state[3]);
 	tmp[2] = (unsigned char)(state[0] ^ state[1] ^ mul2[state[2]] ^ mul3[state[3]]);
 	tmp[3] = (unsigned char)(mul3[state[0]] ^ state[1] ^ state[2] ^ mul2[state[3]]);
@@ -417,6 +428,17 @@ void MixColumns(unsigned char* state)
 
 void InvMixColumns(unsigned char* state)
 {
+	/*
+	16 bytes of cypher text is multiplied by special matrix. Look-up tables mul9, mul11, mul13 and mul4 are implemented for speed and convenience
+
+	Plain Text:					Special Matrix:				Products XORd together:		res = Result of calculation.
+															(1st 4 bytes with top row)	The same is done for all rows/cols
+
+	|  C |  e |  e |  B |	.	| 14 | 11 | 13 |  9 |	=>	(C*14)+(y*11)+(p*13)+(h*9)  =>	|res|   |   |   |
+	|  y |  r |  x |  l |   	|  9 | 14 | 11 | 13 |										|   |   |   |   |
+	|  p |    |  t |  o |		| 13 |  9 | 14 | 11 |										|   |   |   |   |
+	|  h |  T |    |  c |   	| 11 | 13 |  9 | 24 |										|   |   |   |   |
+	*/
 	unsigned char temp[16];
 
 	temp[0] = (unsigned char)(mul14[state[0]] ^ mul11[state[1]] ^ mul13[state[2]] ^ mul9[state[3]]);
