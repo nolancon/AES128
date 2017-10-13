@@ -72,7 +72,7 @@ void run_AES()
 		13, 14, 15, 16,
 	};
 
-	//Message is encrypted in blocks of 16. Therefore if a block is less than 16, it must be 'padded' with 0s up to 16 bytes in size
+	//(Padding Removed in this version) Message is encrypted in blocks of 16. Therefore if a block is less than 16, it must be 'padded' with 0s up to 16 bytes in size
 	int messageLength = strlen((const char*)message);	//Get length of message and store in originalLen
 
 
@@ -92,7 +92,7 @@ void run_AES()
 	//Expand the Keys
 	KeyExpansion(key, expandedKey);
 
-	//Encrypt Padded Message:
+	//Encrypt Message:
 	for (int i = 0; i < messageLength; i += 16)
 		AES_Encrypt(message + i, key);
 
@@ -248,7 +248,7 @@ void AES_Decrypt(unsigned char* message, unsigned char* key)
 
 	//Final Round
 
-	AddRoundKey(state, key);						//Pass state to addRoundKey, also pass key (key = expandedKeys[0-15]) Same as initial round in Encryption!
+	AddRoundKey(state, key);						//Pass state to addRoundKey, also pass key (key = expandedKeys[0-15]) Same as initial AddRoundKey in Encryption!
 
 													//Copy over message with decrypted message (Restoring it to original form)
 	for (int i = 0; i< 16; i++)
