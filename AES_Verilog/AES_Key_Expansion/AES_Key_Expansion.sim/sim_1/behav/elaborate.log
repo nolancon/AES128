@@ -1,0 +1,13 @@
+Vivado Simulator 2017.2
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.2/bin/unwrapped/win64.o/xelab.exe -wto 6b9e867fb0794d61914906293ac4bdb8 --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot KeyExpansion_tb_behav xil_defaultlib.KeyExpansion_tb xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.KeyExpansion_tb
+Compiling module xil_defaultlib.glbl
+ERROR: [XSIM 43-3345] Unable to remove previous simulation file xsim.dir/KeyExpansion_tb_behav/xsimk.exe. Please check if you have another instance of this simulation running on your system, terminate it and then recompile your design. System Error Message: boost::filesystem::status: Access is denied: "xsim.dir/KeyExpansion_tb_behav/xsimk.exe".
+ERROR: [XSIM 43-3238] Failed to link the design.

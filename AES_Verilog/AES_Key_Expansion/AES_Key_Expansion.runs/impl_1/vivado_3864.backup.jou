@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2017.2 (64-bit)
+# SW Build 1909853 on Thu Jun 15 18:39:09 MDT 2017
+# IP Build 1909766 on Thu Jun 15 19:58:00 MDT 2017
+# Start of session at: Fri Oct 20 21:30:34 2017
+# Process ID: 3864
+# Current directory: C:/Users/cmsno/Dropbox/Year_5/Project/Vivado_Projects/AES_Key_Expansion/AES_Key_Expansion.runs/impl_1
+# Command line: vivado.exe -log AES_top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source AES_top.tcl -notrace
+# Log file: C:/Users/cmsno/Dropbox/Year_5/Project/Vivado_Projects/AES_Key_Expansion/AES_Key_Expansion.runs/impl_1/AES_top.vdi
+# Journal file: C:/Users/cmsno/Dropbox/Year_5/Project/Vivado_Projects/AES_Key_Expansion/AES_Key_Expansion.runs/impl_1\vivado.jou
+#-----------------------------------------------------------
+source AES_top.tcl -notrace
