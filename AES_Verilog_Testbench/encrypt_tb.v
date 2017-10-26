@@ -8,7 +8,6 @@ module main;
     reg[127:0] state;
     reg[127:0] cypherText;
     reg[127:0] temp;
-    reg[127:0] temp2;
     reg[7:0] num;
 
     
@@ -70,27 +69,27 @@ module main;
      
        
        //Mix Columns
-        temp2[7:0] =  mul_by_2(state[7:0]) ^ mul_by_3(state[15:8]) ^ state[23:16] ^ state[31:24];
-    	temp2[15:8] = state[7:0] ^ mul_by_2(state[15:8]) ^ mul_by_3(state[23:16]) ^ state[31:24];
-    	temp2[23:16] = state[7:0] ^ state[15:8] ^ mul_by_2(state[23:16]) ^ mul_by_3(state[31:24]);
-    	temp2[31:24] = mul_by_3(state[7:0]) ^ state[15:8] ^ state[23:16] ^ mul_by_2(state[31:24]);
+        temp[7:0] =  mul_by_2(state[7:0]) ^ mul_by_3(state[15:8]) ^ state[23:16] ^ state[31:24];
+    	temp[15:8] = state[7:0] ^ mul_by_2(state[15:8]) ^ mul_by_3(state[23:16]) ^ state[31:24];
+    	temp[23:16] = state[7:0] ^ state[15:8] ^ mul_by_2(state[23:16]) ^ mul_by_3(state[31:24]);
+    	temp[31:24] = mul_by_3(state[7:0]) ^ state[15:8] ^ state[23:16] ^ mul_by_2(state[31:24]);
     
-    	temp2[39:32] = mul_by_2(state[39:32]) ^ mul_by_3(state[47:40]) ^ state[55:48] ^ state[63:56];
-    	temp2[47:40] = state[39:32] ^ mul_by_2(state[47:40]) ^ mul_by_3(state[55:48]) ^ state[63:56];
-    	temp2[55:48] = state[39:32] ^ state[47:40] ^ mul_by_2(state[55:48])^mul_by_3(state[63:56]);
-    	temp2[63:56] = mul_by_3(state[39:32]) ^ state[47:40] ^ state[55:48] ^ mul_by_2(state[63:56]);
+    	temp[39:32] = mul_by_2(state[39:32]) ^ mul_by_3(state[47:40]) ^ state[55:48] ^ state[63:56];
+    	temp[47:40] = state[39:32] ^ mul_by_2(state[47:40]) ^ mul_by_3(state[55:48]) ^ state[63:56];
+    	temp[55:48] = state[39:32] ^ state[47:40] ^ mul_by_2(state[55:48])^mul_by_3(state[63:56]);
+    	temp[63:56] = mul_by_3(state[39:32]) ^ state[47:40] ^ state[55:48] ^ mul_by_2(state[63:56]);
     
-    	temp2[71:64] = mul_by_2(state[71:64]) ^ mul_by_3(state[79:72]) ^ state[87:80] ^ state[95:88];
-    	temp2[79:72] = state[71:64] ^ mul_by_2(state[79:72]) ^ mul_by_3(state[87:80]) ^ state[95:88];
-    	temp2[87:80] = state[71:64] ^ state[79:72] ^ mul_by_2(state[87:80])^mul_by_3(state[95:88]);
-    	temp2[95:88] = mul_by_3(state[71:64]) ^ state[79:72] ^ state[87:80] ^ mul_by_2(state[95:88]);
+    	temp[71:64] = mul_by_2(state[71:64]) ^ mul_by_3(state[79:72]) ^ state[87:80] ^ state[95:88];
+    	temp[79:72] = state[71:64] ^ mul_by_2(state[79:72]) ^ mul_by_3(state[87:80]) ^ state[95:88];
+    	temp[87:80] = state[71:64] ^ state[79:72] ^ mul_by_2(state[87:80])^mul_by_3(state[95:88]);
+    	temp[95:88] = mul_by_3(state[71:64]) ^ state[79:72] ^ state[87:80] ^ mul_by_2(state[95:88]);
     	
-    	temp2[103:96] = mul_by_2(state[103:96]) ^ mul_by_3(state[111:104]) ^ state[119:112] ^ state[127:120];
-    	temp2[111:104] = state[103:96] ^ mul_by_2(state[111:104]) ^ mul_by_3(state[119:112]) ^ state[127:120];
-    	temp2[119:112] = state[103:96] ^ state[111:104] ^ mul_by_2(state[119:112]) ^ mul_by_3(state[127:120]);
-    	temp2[127:120] = mul_by_3(state[103:96]) ^ state[111:104] ^ state[119:112] ^ mul_by_2(state[127:120]);
+    	temp[103:96] = mul_by_2(state[103:96]) ^ mul_by_3(state[111:104]) ^ state[119:112] ^ state[127:120];
+    	temp[111:104] = state[103:96] ^ mul_by_2(state[111:104]) ^ mul_by_3(state[119:112]) ^ state[127:120];
+    	temp[119:112] = state[103:96] ^ state[111:104] ^ mul_by_2(state[119:112]) ^ mul_by_3(state[127:120]);
+    	temp[127:120] = mul_by_3(state[103:96]) ^ state[111:104] ^ state[119:112] ^ mul_by_2(state[127:120]);
         
-        state[127:0] = temp2[127:0];
+        state[127:0] = temp[127:0];
         
         $display("%h",state[127:0]);
     
