@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2017.2 (64-bit)
+# SW Build 1909853 on Thu Jun 15 18:39:09 MDT 2017
+# IP Build 1909766 on Thu Jun 15 19:58:00 MDT 2017
+# Start of session at: Wed Nov  1 14:31:19 2017
+# Process ID: 16996
+# Current directory: C:/Users/cmsno/Dropbox/Year_5/GitRepos/AES128/AES_Verilog/AES_Key_Expansion
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent20168 C:\Users\cmsno\Dropbox\Year_5\GitRepos\AES128\AES_Verilog\AES_Key_Expansion\AES_Key_Expansion.xpr
+# Log file: C:/Users/cmsno/Dropbox/Year_5/GitRepos/AES128/AES_Verilog/AES_Key_Expansion/vivado.log
+# Journal file: C:/Users/cmsno/Dropbox/Year_5/GitRepos/AES128/AES_Verilog/AES_Key_Expansion\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/cmsno/Dropbox/Year_5/GitRepos/AES128/AES_Verilog/AES_Key_Expansion/AES_Key_Expansion.xpr
+INFO: [Project 1-313] Project file moved from 'C:/Users/cmsno/Dropbox/Year_5/Project/Vivado_Projects/AES_Key_Expansion' since last save.
+WARNING: [Project 1-312] File not found as 'C:/Users/Vivado XDC/digilent-xdc-master/Basys-3-Master.xdc'; using path 'C:/Vivado XDC/digilent-xdc-master/Basys-3-Master.xdc' instead.
+Scanning sources...
+Finished scanning sources
+WARNING: [Project 1-312] File not found as 'C:/Users/Vivado XDC/digilent-xdc-master/Basys-3-Master.xdc'; using path 'C:/Vivado XDC/digilent-xdc-master/Basys-3-Master.xdc' instead.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.2/data/ip'.
+update_compile_order -fileset sources_1
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed Nov  1 14:32:51 2017...
