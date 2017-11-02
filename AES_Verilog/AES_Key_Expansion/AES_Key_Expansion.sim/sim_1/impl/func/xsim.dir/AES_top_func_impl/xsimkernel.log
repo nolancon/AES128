@@ -1,7 +1,0 @@
-Running: xsim.dir/AES_top_func_impl/xsimk.exe -simmode gui -wdb AES_top_func_impl.wdb -simrunnum 0 -socket 56099
-Design successfully loaded
-Design Loading Memory Usage: 6500 KB (Peak: 6500 KB)
-Design Loading CPU Usage: 15 ms
-Simulation completed
-Simulation Memory Usage: 7200 KB (Peak: 7200 KB)
-Simulation CPU Usage: 46 ms
