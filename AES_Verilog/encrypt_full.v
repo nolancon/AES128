@@ -2,161 +2,161 @@
 
 module encrypt_full(
     input wire clk,
-    input wire [1407:0] expandedKey,
-    input wire [127:0] plainText,
-    output wire[127:0] cypherText
+    input wire [1407:0] expanded_key,
+    input wire [127:0] plain_text,
+    output wire[127:0] cypher_text
 	);
 	
 	
 	//Internal Signals
-	reg [127:0] cypherText_next;
-	reg [127:0] cypherText_reg;
+	reg [127:0] cypher_text_next;
+	reg [127:0] cypher_text_reg;
 	reg [127:0] state;
 	reg[127:0] temp;
-	reg[1407:0] expandedKey_temp;
+	reg[1407:0] expanded_key_temp;
     integer index;
 	
 	
 	always @(posedge clk)
     begin
-        cypherText_reg <= cypherText_next;
+        cypher_text_reg <= cypher_text_next;
     end
 	
 	
 	always @*
     begin
-		    //Combinational logic
-		    
-	    	expandedKey_temp[1407:0] = expandedKey[1407:0];
+    	//Combinational logic
+	    
+    	expanded_key_temp[1407:0] = expanded_key[1407:0];
 
-	        //Add Round Key
-	        state[127:0] = expandedKey[127:0] ^ plainText[127:0];
-	    
-		    for(index=1;index<10;index=index+1) //Perform first 9 rounds
-	        begin
-	            //Sub Bytes (S-Box)
-	            state[7:0] = sbox(state[7:0]);      //0
-	            state[15:8] = sbox(state[15:8]);    //1
-	            state[23:16] = sbox(state[23:16]);  //2
-	            state[31:24] = sbox(state[31:24]);  //3
-	            state[39:32] = sbox(state[39:32]);  //4
-	            state[47:40] = sbox(state[47:40]);  //5
-	            state[55:48] = sbox(state[55:48]);  //6
-	            state[63:56] = sbox(state[63:56]);  //7
-	            state[71:64] = sbox(state[71:64]);  //8
-	            state[79:72] = sbox(state[79:72]);  //9
-	            state[87:80] = sbox(state[87:80]);  //10
-	            state[95:88] = sbox(state[95:88]);  //11
-	            state[103:96] = sbox(state[103:96]);    //12
-	            state[111:104] = sbox(state[111:104]);  //13
-	            state[119:112] = sbox(state[119:112]);  //14
-	            state[127:120] = sbox(state[127:120]);  //15
+        //Add Round Key
+        state[127:0] = expanded_key[127:0] ^ plain_text[127:0];
+    
+	    for(index=1;index<10;index=index+1) //Perform first 9 rounds
+        begin
+            //Sub Bytes (S-Box)
+            state[7:0] = sbox(state[7:0]);      //0
+            state[15:8] = sbox(state[15:8]);    //1
+            state[23:16] = sbox(state[23:16]);  //2
+            state[31:24] = sbox(state[31:24]);  //3
+            state[39:32] = sbox(state[39:32]);  //4
+            state[47:40] = sbox(state[47:40]);  //5
+            state[55:48] = sbox(state[55:48]);  //6
+            state[63:56] = sbox(state[63:56]);  //7
+            state[71:64] = sbox(state[71:64]);  //8
+            state[79:72] = sbox(state[79:72]);  //9
+            state[87:80] = sbox(state[87:80]);  //10
+            state[95:88] = sbox(state[95:88]);  //11
+            state[103:96] = sbox(state[103:96]);    //12
+            state[111:104] = sbox(state[111:104]);  //13
+            state[119:112] = sbox(state[119:112]);  //14
+            state[127:120] = sbox(state[127:120]);  //15
+        
+        
+        
+            //Shift Rows
+            temp[7:0] = state[7:0];
+            temp[15:8] = state[47:40];
+            temp[23:16] = state[87:80];
+            temp[31:24] = state[127:120];
+        
+            temp[39:32] = state[39:32];
+            temp[47:40] = state[79:72];
+            temp[55:48] = state[119:112];
+            temp[63:56] = state[31:24];
+        
+            temp[71:64] = state[71:64];
+            temp[79:72] = state[111:104];
+            temp[87:80] = state[23:16];
+            temp[95:88] = state[63:56];
+        
+            temp[103:96] = state[103:96];
+            temp[111:104] = state[15:8];
+            temp[119:112] = state[55:48];
+            temp[127:120] = state[95:88];
             
+            state[127:0] = temp[127:0];
+	        
+	        //Mix Columns
+            temp[7:0] =  mul_by_2(state[7:0]) ^ mul_by_3(state[15:8]) ^ state[23:16] ^ state[31:24];
+            temp[15:8] = state[7:0] ^ mul_by_2(state[15:8]) ^ mul_by_3(state[23:16]) ^ state[31:24];
+            temp[23:16] = state[7:0] ^ state[15:8] ^ mul_by_2(state[23:16]) ^ mul_by_3(state[31:24]);
+            temp[31:24] = mul_by_3(state[7:0]) ^ state[15:8] ^ state[23:16] ^ mul_by_2(state[31:24]);
+        
+            temp[39:32] = mul_by_2(state[39:32]) ^ mul_by_3(state[47:40]) ^ state[55:48] ^ state[63:56];
+            temp[47:40] = state[39:32] ^ mul_by_2(state[47:40]) ^ mul_by_3(state[55:48]) ^ state[63:56];
+            temp[55:48] = state[39:32] ^ state[47:40] ^ mul_by_2(state[55:48])^mul_by_3(state[63:56]);
+            temp[63:56] = mul_by_3(state[39:32]) ^ state[47:40] ^ state[55:48] ^ mul_by_2(state[63:56]);
+        
+            temp[71:64] = mul_by_2(state[71:64]) ^ mul_by_3(state[79:72]) ^ state[87:80] ^ state[95:88];
+            temp[79:72] = state[71:64] ^ mul_by_2(state[79:72]) ^ mul_by_3(state[87:80]) ^ state[95:88];
+            temp[87:80] = state[71:64] ^ state[79:72] ^ mul_by_2(state[87:80])^mul_by_3(state[95:88]);
+            temp[95:88] = mul_by_3(state[71:64]) ^ state[79:72] ^ state[87:80] ^ mul_by_2(state[95:88]);
             
+            temp[103:96] = mul_by_2(state[103:96]) ^ mul_by_3(state[111:104]) ^ state[119:112] ^ state[127:120];
+            temp[111:104] = state[103:96] ^ mul_by_2(state[111:104]) ^ mul_by_3(state[119:112]) ^ state[127:120];
+            temp[119:112] = state[103:96] ^ state[111:104] ^ mul_by_2(state[119:112]) ^ mul_by_3(state[127:120]);
+            temp[127:120] = mul_by_3(state[103:96]) ^ state[111:104] ^ state[119:112] ^ mul_by_2(state[127:120]);
             
-	            //Shift Rows
-	            temp[7:0] = state[7:0];
-	            temp[15:8] = state[47:40];
-	            temp[23:16] = state[87:80];
-	            temp[31:24] = state[127:120];
-	        
-	            temp[39:32] = state[39:32];
-	            temp[47:40] = state[79:72];
-	            temp[55:48] = state[119:112];
-	            temp[63:56] = state[31:24];
-	        
-	            temp[71:64] = state[71:64];
-	            temp[79:72] = state[111:104];
-	            temp[87:80] = state[23:16];
-	            temp[95:88] = state[63:56];
-	        
-	            temp[103:96] = state[103:96];
-	            temp[111:104] = state[15:8];
-	            temp[119:112] = state[55:48];
-	            temp[127:120] = state[95:88];
-	            
-	            state[127:0] = temp[127:0];
-		        
-		        //Mix Columns
-	            temp[7:0] =  mul_by_2(state[7:0]) ^ mul_by_3(state[15:8]) ^ state[23:16] ^ state[31:24];
-	            temp[15:8] = state[7:0] ^ mul_by_2(state[15:8]) ^ mul_by_3(state[23:16]) ^ state[31:24];
-	            temp[23:16] = state[7:0] ^ state[15:8] ^ mul_by_2(state[23:16]) ^ mul_by_3(state[31:24]);
-	            temp[31:24] = mul_by_3(state[7:0]) ^ state[15:8] ^ state[23:16] ^ mul_by_2(state[31:24]);
-	        
-	            temp[39:32] = mul_by_2(state[39:32]) ^ mul_by_3(state[47:40]) ^ state[55:48] ^ state[63:56];
-	            temp[47:40] = state[39:32] ^ mul_by_2(state[47:40]) ^ mul_by_3(state[55:48]) ^ state[63:56];
-	            temp[55:48] = state[39:32] ^ state[47:40] ^ mul_by_2(state[55:48])^mul_by_3(state[63:56]);
-	            temp[63:56] = mul_by_3(state[39:32]) ^ state[47:40] ^ state[55:48] ^ mul_by_2(state[63:56]);
-	        
-	            temp[71:64] = mul_by_2(state[71:64]) ^ mul_by_3(state[79:72]) ^ state[87:80] ^ state[95:88];
-	            temp[79:72] = state[71:64] ^ mul_by_2(state[79:72]) ^ mul_by_3(state[87:80]) ^ state[95:88];
-	            temp[87:80] = state[71:64] ^ state[79:72] ^ mul_by_2(state[87:80])^mul_by_3(state[95:88]);
-	            temp[95:88] = mul_by_3(state[71:64]) ^ state[79:72] ^ state[87:80] ^ mul_by_2(state[95:88]);
-	            
-	            temp[103:96] = mul_by_2(state[103:96]) ^ mul_by_3(state[111:104]) ^ state[119:112] ^ state[127:120];
-	            temp[111:104] = state[103:96] ^ mul_by_2(state[111:104]) ^ mul_by_3(state[119:112]) ^ state[127:120];
-	            temp[119:112] = state[103:96] ^ state[111:104] ^ mul_by_2(state[119:112]) ^ mul_by_3(state[127:120]);
-	            temp[127:120] = mul_by_3(state[103:96]) ^ state[111:104] ^ state[119:112] ^ mul_by_2(state[127:120]);
-	            
-	            state[127:0] = temp[127:0];
-		    
-		    	//Add Round Key
-            
-	            state = state[127:0] ^ expandedKey_temp[255:128];
-	            expandedKey_temp[1407:0] = expandedKey_temp[1407:0] >> 128;
-	        end
-	        
-	        //Perform final (10th) round
-	        //Sub Bytes (S-Box)
-	        state[7:0] = sbox(state[7:0]);      //0
-	        state[15:8] = sbox(state[15:8]);    //1
-	        state[23:16] = sbox(state[23:16]);  //2
-	        state[31:24] = sbox(state[31:24]);  //3
-	        state[39:32] = sbox(state[39:32]);  //4
-	        state[47:40] = sbox(state[47:40]);  //5
-	        state[55:48] = sbox(state[55:48]);  //6
-	        state[63:56] = sbox(state[63:56]);  //7
-	        state[71:64] = sbox(state[71:64]);  //8
-	        state[79:72] = sbox(state[79:72]);  //9
-	        state[87:80] = sbox(state[87:80]);  //10
-	        state[95:88] = sbox(state[95:88]);  //11
-	        state[103:96] = sbox(state[103:96]);    //12
-	        state[111:104] = sbox(state[111:104]);  //13
-	        state[119:112] = sbox(state[119:112]);  //14
-	        state[127:120] = sbox(state[127:120]);  //15
+            state[127:0] = temp[127:0];
 	    
+	    	//Add Round Key
+        
+            state = state[127:0] ^ expanded_key_temp[255:128];
+            expanded_key_temp[1407:0] = expanded_key_temp[1407:0] >> 128;
+        end
 	        
-	        //Shift Rows
-	        temp[7:0] = state[7:0];
-	        temp[15:8] = state[47:40];
-	        temp[23:16] = state[87:80];
-	        temp[31:24] = state[127:120];
-	    
-	        temp[39:32] = state[39:32];
-	        temp[47:40] = state[79:72];
-	        temp[55:48] = state[119:112];
-	        temp[63:56] = state[31:24];
-	    
-	        temp[71:64] = state[71:64];
-	        temp[79:72] = state[111:104];
-	        temp[87:80] = state[23:16];
-	        temp[95:88] = state[63:56];
-	    
-	        temp[103:96] = state[103:96];
-	        temp[111:104] = state[15:8];
-	        temp[119:112] = state[55:48];
-	        temp[127:120] = state[95:88];
-	        
-	        state[127:0] = temp[127:0];
-	      
-	    
-	        //Add Round Key
-	        state = state[127:0] ^ expandedKey_temp[255:128];
-	        cypherText_next[127:0] = state[127:0];
+        //Perform final (10th) round
+        //Sub Bytes (S-Box)
+        state[7:0] = sbox(state[7:0]);      //0
+        state[15:8] = sbox(state[15:8]);    //1
+        state[23:16] = sbox(state[23:16]);  //2
+        state[31:24] = sbox(state[31:24]);  //3
+        state[39:32] = sbox(state[39:32]);  //4
+        state[47:40] = sbox(state[47:40]);  //5
+        state[55:48] = sbox(state[55:48]);  //6
+        state[63:56] = sbox(state[63:56]);  //7
+        state[71:64] = sbox(state[71:64]);  //8
+        state[79:72] = sbox(state[79:72]);  //9
+        state[87:80] = sbox(state[87:80]);  //10
+        state[95:88] = sbox(state[95:88]);  //11
+        state[103:96] = sbox(state[103:96]);    //12
+        state[111:104] = sbox(state[111:104]);  //13
+        state[119:112] = sbox(state[119:112]);  //14
+        state[127:120] = sbox(state[127:120]);  //15
+    
+        
+        //Shift Rows
+        temp[7:0] = state[7:0];
+        temp[15:8] = state[47:40];
+        temp[23:16] = state[87:80];
+        temp[31:24] = state[127:120];
+    
+        temp[39:32] = state[39:32];
+        temp[47:40] = state[79:72];
+        temp[55:48] = state[119:112];
+        temp[63:56] = state[31:24];
+    
+        temp[71:64] = state[71:64];
+        temp[79:72] = state[111:104];
+        temp[87:80] = state[23:16];
+        temp[95:88] = state[63:56];
+    
+        temp[103:96] = state[103:96];
+        temp[111:104] = state[15:8];
+        temp[119:112] = state[55:48];
+        temp[127:120] = state[95:88];
+        
+        state[127:0] = temp[127:0];
+      
+    
+        //Add Round Key
+        state = state[127:0] ^ expanded_key_temp[255:128];
+        cypher_text_next[127:0] = state[127:0];
 	    
     end
    
-	assign cypherText = cypherText_reg;
+	assign cypher_text = cypher_text_reg;
 	
 	function [7:0] sbox;
     input[7:0] address;
@@ -426,7 +426,7 @@ module encrypt_full(
     end
 endfunction
 
-     function [7:0] mul_by_2;
+    function [7:0] mul_by_2;
     input [7:0] x;
  
     case (x)
