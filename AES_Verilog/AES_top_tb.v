@@ -30,8 +30,8 @@ module AES_top_tb();
 	wire [127:0] cypher_text;
     
     
-    AES_top i_AES_top(.clk(clk), .key(key), .plain_text(plain_text), .expanded_key(expanded_key), .cypher_text(cypher_text));
-    
+    AES_top i_AES_top(.clk(clk), .key(key), .plain_text(plain_text),.expanded_key(expanded_key), .cypher_text(cypher_text));
+
     always
     begin
         clk = 1'b1;
