@@ -25,12 +25,18 @@ module AES_top_tb();
     reg clk, rst;
     wire [127:0] key;
     wire [1407:0] expanded_key;
-	
 	wire [127:0] plain_text;
 	wire [127:0] cypher_text;
+	wire [127:0] decrypted_plain_text;
+
     
-    
-    AES_top i_AES_top(.clk(clk), .key(key), .plain_text(plain_text),.expanded_key(expanded_key), .cypher_text(cypher_text));
+    AES_top i_AES_top(
+	    . clk(clk), 
+	    . key(key), 
+	    . plain_text(plain_text),
+	    . expanded_key(expanded_key), 
+	    . cypher_text(cypher_text),
+	    . decrypted_plain_text(decrypted_plain_text));
 
     always
     begin

@@ -4,7 +4,6 @@
 module key_scheduler(
 	input wire clk,
 	input wire[1407:0] expanded_key,
-	
 	output wire [127:0] round1_key,
 	output wire [127:0] round2_key,
 	output wire [127:0] round3_key,

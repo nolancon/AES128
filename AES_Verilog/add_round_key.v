@@ -4,7 +4,7 @@
 module add_round_key(
     input wire clk,
     input wire [127:0] round_key,
-    input wire [127:0] state_mc,
+    input wire [127:0] state_ark_in,
     output wire [127:0] state_ark
 	);
 	
@@ -28,10 +28,9 @@ module add_round_key(
     begin
     	//Combinational logic
     	round_key_temp = round_key;
-    	state_ark_temp = state_mc;
+    	state_ark_temp = state_ark_in;
     	//Add Round Key
         state_ark_next = state_ark_temp[127:0] ^ round_key_temp[127:0];
-//	    state_ark_next = state_ark_temp;
     end
     
     assign state_ark = state_ark_reg;
