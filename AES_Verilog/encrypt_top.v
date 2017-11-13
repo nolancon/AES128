@@ -88,7 +88,11 @@ module encrypt_top(
     assign cypher_text = enc_state_final_round_reg;
     
 
-	add_key i_add_key(.clk(clk), .key(key), . add_key_in(plain_text), .add_key_out(enc_state_in));
+//	add_key i_add_key(.clk(clk), .key(key), . add_key_in(plain_text), .add_key_out(enc_state_in));
+    add_round_key i_add_round_key(
+	    . clk(clk), . round_key(key),
+	    . state_ark_in(plain_text),
+	    . state_ark(enc_state_in));
     
 	encrypt_round i_encrypt_round_1(
 		. clk(clk), 

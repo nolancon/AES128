@@ -149,11 +149,10 @@ module decrypt_top(
 		. dec_state_in(dec_state_round10_in),
 		. dec_state_round(dec_state_round10_out));
     
-    add_key i_add_key(
-		    .clk(clk),
-		    .key(key),
-		    .add_key_in(dec_add_key_in),
-		    .add_key_out(dec_add_key_out));
-    
+    add_round_key i_add_round_key(
+	    . clk(clk),
+	    . round_key(key),
+	    . state_ark_in(dec_add_key_in),
+	    . state_ark(dec_add_key_out));
     
 	endmodule
