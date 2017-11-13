@@ -3,43 +3,43 @@
 
 module sub_bytes(
     input wire clk,
-    input wire [127:0] state_ak,
-    output wire [127:0] state_sb
+    input wire [127:0] state_sb_in,
+    output wire [127:0] state_sb_out
 	);
 	
-	reg [127:0] state_sb_reg; 
-	reg [127:0] state_sb_next;
+	reg [127:0] state_sb_out_reg; 
+	reg [127:0] state_sb_out_next;
 	
 	always @(posedge clk)
     begin
-        state_sb_reg <= state_sb_next;
+        state_sb_out_reg <= state_sb_out_next;
     end
 	
 	always @*
     begin
     	//Combinational logic
         //Sub Bytes (S-Box)
-        state_sb_next = state_ak;
+        state_sb_out_next = state_sb_in;
         
-        state_sb_next[7:0] = sbox(state_sb_next[7:0]);      //0
-        state_sb_next[15:8] = sbox(state_sb_next[15:8]);    //1
-        state_sb_next[23:16] = sbox(state_sb_next[23:16]);  //2
-        state_sb_next[31:24] = sbox(state_sb_next[31:24]);  //3
-        state_sb_next[39:32] = sbox(state_sb_next[39:32]);  //4
-        state_sb_next[47:40] = sbox(state_sb_next[47:40]);  //5
-        state_sb_next[55:48] = sbox(state_sb_next[55:48]);  //6
-        state_sb_next[63:56] = sbox(state_sb_next[63:56]);  //7
-        state_sb_next[71:64] = sbox(state_sb_next[71:64]);  //8
-        state_sb_next[79:72] = sbox(state_sb_next[79:72]);  //9
-        state_sb_next[87:80] = sbox(state_sb_next[87:80]);  //10
-        state_sb_next[95:88] = sbox(state_sb_next[95:88]);  //11
-        state_sb_next[103:96] = sbox(state_sb_next[103:96]);    //12
-        state_sb_next[111:104] = sbox(state_sb_next[111:104]);  //13
-        state_sb_next[119:112] = sbox(state_sb_next[119:112]);  //14
-        state_sb_next[127:120] = sbox(state_sb_next[127:120]);  //15
+        state_sb_out_next[7:0] = sbox(state_sb_out_next[7:0]);      //0
+        state_sb_out_next[15:8] = sbox(state_sb_out_next[15:8]);    //1
+        state_sb_out_next[23:16] = sbox(state_sb_out_next[23:16]);  //2
+        state_sb_out_next[31:24] = sbox(state_sb_out_next[31:24]);  //3
+        state_sb_out_next[39:32] = sbox(state_sb_out_next[39:32]);  //4
+        state_sb_out_next[47:40] = sbox(state_sb_out_next[47:40]);  //5
+        state_sb_out_next[55:48] = sbox(state_sb_out_next[55:48]);  //6
+        state_sb_out_next[63:56] = sbox(state_sb_out_next[63:56]);  //7
+        state_sb_out_next[71:64] = sbox(state_sb_out_next[71:64]);  //8
+        state_sb_out_next[79:72] = sbox(state_sb_out_next[79:72]);  //9
+        state_sb_out_next[87:80] = sbox(state_sb_out_next[87:80]);  //10
+        state_sb_out_next[95:88] = sbox(state_sb_out_next[95:88]);  //11
+        state_sb_out_next[103:96] = sbox(state_sb_out_next[103:96]);    //12
+        state_sb_out_next[111:104] = sbox(state_sb_out_next[111:104]);  //13
+        state_sb_out_next[119:112] = sbox(state_sb_out_next[119:112]);  //14
+        state_sb_out_next[127:120] = sbox(state_sb_out_next[127:120]);  //15
 	end
     
-    assign state_sb = state_sb_reg;
+    assign state_sb_out = state_sb_out_reg;
     
 	    function [7:0] sbox;
 	    input[7:0] address;

@@ -13,7 +13,10 @@ module AES_top(
 	wire [127:0] round1_key, round2_key, round3_key, round4_key, round5_key,
 				 round6_key, round7_key, round8_key, round9_key, round10_key; 
 	
-	expand_key i_expand_key(.clk(clk), .key(key), .expanded_key(expanded_key));
+	expand_key i_expand_key(
+		.clk(clk), 
+		.key(key), 
+		.expanded_key(expanded_key));
 
 	key_scheduler i_key_scheduler(
 	    . clk(clk),

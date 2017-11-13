@@ -3,43 +3,43 @@
 
 module inv_sub_bytes(
     input wire clk,
-    input wire [127:0] state_isr,
-    output wire [127:0] state_isb
+    input wire [127:0] state_isb_in,
+    output wire [127:0] state_isb_out
 	);
 	
-	reg [127:0] state_isb_reg; 
-	reg [127:0] state_isb_next;
+	reg [127:0] state_isb_out_reg; 
+	reg [127:0] state_isb_out_next;
 	
 	always @(posedge clk)
     begin
-        state_isb_reg <= state_isb_next;
+        state_isb_out_reg <= state_isb_out_next;
     end
 	
 	always @*
     begin
     	//Combinational logic
         //Sub Bytes (S-Box)
-        state_isb_next = state_isr;
+        state_isb_out_next = state_isb_in;
         
-        state_isb_next[7:0] = inv_sbox(state_isb_next[7:0]);      //0
-        state_isb_next[15:8] = inv_sbox(state_isb_next[15:8]);    //1
-        state_isb_next[23:16] = inv_sbox(state_isb_next[23:16]);  //2
-        state_isb_next[31:24] = inv_sbox(state_isb_next[31:24]);  //3
-        state_isb_next[39:32] = inv_sbox(state_isb_next[39:32]);  //4
-        state_isb_next[47:40] = inv_sbox(state_isb_next[47:40]);  //5
-        state_isb_next[55:48] = inv_sbox(state_isb_next[55:48]);  //6
-        state_isb_next[63:56] = inv_sbox(state_isb_next[63:56]);  //7
-        state_isb_next[71:64] = inv_sbox(state_isb_next[71:64]);  //8
-        state_isb_next[79:72] = inv_sbox(state_isb_next[79:72]);  //9
-        state_isb_next[87:80] = inv_sbox(state_isb_next[87:80]);  //10
-        state_isb_next[95:88] = inv_sbox(state_isb_next[95:88]);  //11
-        state_isb_next[103:96] = inv_sbox(state_isb_next[103:96]);    //12
-        state_isb_next[111:104] = inv_sbox(state_isb_next[111:104]);  //13
-        state_isb_next[119:112] = inv_sbox(state_isb_next[119:112]);  //14
-        state_isb_next[127:120] = inv_sbox(state_isb_next[127:120]);  //15
+        state_isb_out_next[7:0] = inv_sbox(state_isb_out_next[7:0]);      //0
+        state_isb_out_next[15:8] = inv_sbox(state_isb_out_next[15:8]);    //1
+        state_isb_out_next[23:16] = inv_sbox(state_isb_out_next[23:16]);  //2
+        state_isb_out_next[31:24] = inv_sbox(state_isb_out_next[31:24]);  //3
+        state_isb_out_next[39:32] = inv_sbox(state_isb_out_next[39:32]);  //4
+        state_isb_out_next[47:40] = inv_sbox(state_isb_out_next[47:40]);  //5
+        state_isb_out_next[55:48] = inv_sbox(state_isb_out_next[55:48]);  //6
+        state_isb_out_next[63:56] = inv_sbox(state_isb_out_next[63:56]);  //7
+        state_isb_out_next[71:64] = inv_sbox(state_isb_out_next[71:64]);  //8
+        state_isb_out_next[79:72] = inv_sbox(state_isb_out_next[79:72]);  //9
+        state_isb_out_next[87:80] = inv_sbox(state_isb_out_next[87:80]);  //10
+        state_isb_out_next[95:88] = inv_sbox(state_isb_out_next[95:88]);  //11
+        state_isb_out_next[103:96] = inv_sbox(state_isb_out_next[103:96]);    //12
+        state_isb_out_next[111:104] = inv_sbox(state_isb_out_next[111:104]);  //13
+        state_isb_out_next[119:112] = inv_sbox(state_isb_out_next[119:112]);  //14
+        state_isb_out_next[127:120] = inv_sbox(state_isb_out_next[127:120]);  //15
 	end
     
-    assign state_isb = state_isb_reg;
+    assign state_isb_out = state_isb_out_reg;
     
  function [7:0] inv_sbox;
 	    input[7:0] address;

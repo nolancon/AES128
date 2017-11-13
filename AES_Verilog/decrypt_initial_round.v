@@ -16,9 +16,9 @@ module decrypt_initial_round(
 	reg [127:0] state_round_reg;
 	
     
-	add_round_key i_add_round_key(. clk(clk),. round_key(round_key),. state_ark_in(state_in),. state_ark(state_ark));
-    inv_shift_rows i_inv_shift_rows(. clk(clk),. state_isr_in(state_ark),. state_isr(state_isr));
-    inv_sub_bytes i_inv_sub_bytes(. clk(clk),. state_isr(state_isr),. state_isb(state_isb));
+	add_round_key i_add_round_key(. clk(clk),. round_key(round_key),. state_ark_in(state_in),. state_ark_out(state_ark));
+    inv_shift_rows i_inv_shift_rows(. clk(clk),. state_isr_in(state_ark),. state_isr_out(state_isr));
+    inv_sub_bytes i_inv_sub_bytes(. clk(clk),. state_isb_in(state_isr),. state_isb_out(state_isb));
     
     
     always @(posedge clk)

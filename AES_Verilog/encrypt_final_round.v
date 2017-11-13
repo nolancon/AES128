@@ -15,9 +15,9 @@ module encrypt_final_round(
 	reg [127:0] state_round_reg;
 	
 	
-	sub_bytes i_sub_bytes(. clk(clk), . state_ak(state_in),. state_sb(state_sb));
-	shift_rows i_shift_rows(. clk(clk), . state_sb(state_sb), .state_sr(state_sr));
-	add_round_key i_add_round_key(. clk(clk),. round_key(round_key),. state_ark_in(state_sr),. state_ark(state_ark));
+	sub_bytes i_sub_bytes(. clk(clk), . state_sb_in(state_in),. state_sb_out(state_sb));
+	shift_rows i_shift_rows(. clk(clk), . state_sr_in(state_sb), .state_sr_out(state_sr));
+	add_round_key i_add_round_key(. clk(clk),. round_key(round_key),. state_ark_in(state_sr),. state_ark_out(state_ark));
 	
 	
 	

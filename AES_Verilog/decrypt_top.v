@@ -153,6 +153,6 @@ module decrypt_top(
 	    . clk(clk),
 	    . round_key(key),
 	    . state_ark_in(dec_add_key_in),
-	    . state_ark(dec_add_key_out));
+	    . state_ark_out(dec_add_key_out));
     
 	endmodule

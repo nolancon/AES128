@@ -8,10 +8,10 @@ module decrypt_round(
     output wire [127:0] dec_state_round
 	);
 	
-	wire [127:0] state_ark;
-	wire [127:0] state_imc;
-	wire [127:0] state_isr;
-	wire [127:0] state_isb;
+	wire [127:0] state_ark_out;
+	wire [127:0] state_imc_out;
+	wire [127:0] state_isr_out;
+	wire [127:0] state_isb_out;
 	
 	
 	
@@ -20,10 +20,10 @@ module decrypt_round(
 	reg [127:0] dec_state_round_reg;
 	
 	
-	add_round_key i_add_round_key(. clk(clk),. round_key(round_key),. state_ark_in(dec_state_in),. state_ark(state_ark));
-	inv_mix_columns i_inv_mix_columns(. clk(clk),. state_ark(state_ark),. state_imc(state_imc));
-	inv_shift_rows i_inv_shift_rows(.clk(clk),. state_isr_in(state_imc),. state_isr(state_isr));
-	inv_sub_bytes i_inv_sub_bytes(.clk(clk),. state_isr(state_isr),. state_isb(state_isb));
+	add_round_key i_add_round_key(. clk(clk),. round_key(round_key),. state_ark_in(dec_state_in),. state_ark_out(state_ark_out));
+	inv_mix_columns i_inv_mix_columns(. clk(clk),. state_imc_in(state_ark_out),. state_imc_out(state_imc_out));
+	inv_shift_rows i_inv_shift_rows(.clk(clk),. state_isr_in(state_imc_out),. state_isr_out(state_isr_out));
+	inv_sub_bytes i_inv_sub_bytes(.clk(clk),. state_isb_in(state_isr_out),. state_isb_out(state_isb_out));
 	
 	
 	
@@ -35,7 +35,7 @@ module decrypt_round(
 	always @*
     begin
     	//Combinational logic
-		dec_state_round_next = state_isb;
+		dec_state_round_next = state_isb_out;
     end
     
     assign dec_state_round = dec_state_round_reg;
