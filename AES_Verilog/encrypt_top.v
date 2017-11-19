@@ -15,7 +15,7 @@ module encrypt_top(
 	input wire [127:0] round9_key, 
 	input wire [127:0] round10_key, 
     input wire [127:0] plain_text,
-    output wire [127:0] cypher_text
+    output wire [127:0] cipher_text
 	);
 	
 	wire [127:0] enc_state_in;	
@@ -85,7 +85,7 @@ module encrypt_top(
     assign enc_state_round8_in = enc_state_round7_reg;
     assign enc_state_round9_in = enc_state_round8_reg;
     assign enc_state_final_round_in = enc_state_round9_reg;
-    assign cypher_text = enc_state_final_round_reg;
+    assign cipher_text = enc_state_final_round_reg;
     
 
     add_round_key i_add_round_key(

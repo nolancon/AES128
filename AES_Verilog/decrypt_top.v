@@ -14,7 +14,7 @@ module decrypt_top(
 	input wire [127:0] round8_key, 
 	input wire [127:0] round9_key, 
 	input wire [127:0] round10_key, 
-    input wire [127:0] cypher_text,
+    input wire [127:0] cipher_text,
     output wire [127:0] decrypted_plain_text
 	);
 	
@@ -92,7 +92,7 @@ module decrypt_top(
 	decrypt_initial_round i_decrypt_initial_round(
 			. clk(clk), 
 			. round_key(round10_key),
-			. state_in(cypher_text),
+			. state_in(cipher_text),
 			. state_round(dec_state_round1_out));
     
     decrypt_round i_decrypt_round_2(

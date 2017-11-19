@@ -64,6 +64,8 @@ void run_AES()
 {
 	//unsigned char message[] = "My name is Conor Nolan and I am a Computer and Electronics Engineering student at GMIT";		//String to encrypt
 	unsigned char message[] = "Conor Nolan GMIT";		//String to encrypt
+	//unsigned char message[] = "Text to encrypt!";		//String to encrypt
+	//unsigned char message[] = "BCDEFGHIJKLMNOPQ";		//String to encrypt
 
 	unsigned char key[16] = {				//Key to be expanded 
 		1, 2, 3, 4,

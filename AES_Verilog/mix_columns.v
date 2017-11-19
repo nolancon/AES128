@@ -72,6 +72,7 @@ module mix_columns(
       8'h0D : mul_by_2 = 8'h1A;
       8'h0E : mul_by_2 = 8'h1C;
       8'h0F : mul_by_2 = 8'h1E;
+      
       8'h10 : mul_by_2 = 8'h20;
       8'h11 : mul_by_2 = 8'h22;
       8'h12 : mul_by_2 = 8'h24;
@@ -88,6 +89,7 @@ module mix_columns(
       8'h1D : mul_by_2 = 8'h3A;
       8'h1E : mul_by_2 = 8'h3C;
       8'h1F : mul_by_2 = 8'h3E;
+      
       8'h20 : mul_by_2 = 8'h40;
       8'h21 : mul_by_2 = 8'h42;
       8'h22 : mul_by_2 = 8'h44;
@@ -104,6 +106,7 @@ module mix_columns(
       8'h2D : mul_by_2 = 8'h5A;
       8'h2E : mul_by_2 = 8'h5C;
       8'h2F : mul_by_2 = 8'h5E;
+      
       8'h30 : mul_by_2 = 8'h60;
       8'h31 : mul_by_2 = 8'h62;
       8'h32 : mul_by_2 = 8'h64;
@@ -120,6 +123,7 @@ module mix_columns(
       8'h3D : mul_by_2 = 8'h7A;
       8'h3E : mul_by_2 = 8'h7C;
       8'h3F : mul_by_2 = 8'h7E;
+      
       8'h40 : mul_by_2 = 8'h80;
       8'h41 : mul_by_2 = 8'h82;      
       8'h42 : mul_by_2 = 8'h84;
@@ -136,6 +140,7 @@ module mix_columns(
       8'h4D : mul_by_2 = 8'h9A;
       8'h4E : mul_by_2 = 8'h9C;
       8'h4F : mul_by_2 = 8'h9E;
+      
       8'h50 : mul_by_2 = 8'hA0;
       8'h51 : mul_by_2 = 8'hA2;
       8'h52 : mul_by_2 = 8'hA4;
@@ -152,6 +157,7 @@ module mix_columns(
       8'h5D : mul_by_2 = 8'hBA;
       8'h5E : mul_by_2 = 8'hBC;
       8'h5F : mul_by_2 = 8'hBE;
+      
       8'h60 : mul_by_2 = 8'hC0;
       8'h61 : mul_by_2 = 8'hC2;
       8'h62 : mul_by_2 = 8'hC4;
@@ -168,6 +174,7 @@ module mix_columns(
       8'h6D : mul_by_2 = 8'hDA;
       8'h6E : mul_by_2 = 8'hDC;
       8'h6F : mul_by_2 = 8'hDE;
+      
       8'h70 : mul_by_2 = 8'hE0;
       8'h71 : mul_by_2 = 8'hE2;
       8'h72 : mul_by_2 = 8'hE4;
@@ -184,6 +191,7 @@ module mix_columns(
       8'h7D : mul_by_2 = 8'hFA;
       8'h7E : mul_by_2 = 8'hFC;
       8'h7F : mul_by_2 = 8'hFE;
+      
       8'h80 : mul_by_2 = 8'h1B;
       8'h81 : mul_by_2 = 8'h19;
       8'h82 : mul_by_2 = 8'h1F;
@@ -200,6 +208,7 @@ module mix_columns(
       8'h8D : mul_by_2 = 8'h01;
       8'h8E : mul_by_2 = 8'h07;
       8'h8F : mul_by_2 = 8'h05;
+      
       8'h90 : mul_by_2 = 8'h3B;
       8'h91 : mul_by_2 = 8'h39;
       8'h92 : mul_by_2 = 8'h3F;
@@ -216,6 +225,7 @@ module mix_columns(
       8'h9D : mul_by_2 = 8'h21;
       8'h9E : mul_by_2 = 8'h27;
       8'h9F : mul_by_2 = 8'h25;
+      
       8'hA0 : mul_by_2 = 8'h5B;
       8'hA1 : mul_by_2 = 8'h59;
       8'hA2 : mul_by_2 = 8'h5F;
@@ -232,6 +242,7 @@ module mix_columns(
       8'hAD : mul_by_2 = 8'h41;
       8'hAE : mul_by_2 = 8'h47;
       8'hAF : mul_by_2 = 8'h45;
+      
       8'hB0 : mul_by_2 = 8'h7B;
       8'hB1 : mul_by_2 = 8'h79;
       8'hB2 : mul_by_2 = 8'h7F;
@@ -248,6 +259,7 @@ module mix_columns(
       8'hBD : mul_by_2 = 8'h61;
       8'hBE : mul_by_2 = 8'h67;
       8'hBF : mul_by_2 = 8'h65;
+      
       8'hC0 : mul_by_2 = 8'h9B;
       8'hC1 : mul_by_2 = 8'h99;
       8'hC2 : mul_by_2 = 8'h9F;
@@ -264,7 +276,8 @@ module mix_columns(
       8'hCD : mul_by_2 = 8'h81;
       8'hCE : mul_by_2 = 8'h87;
       8'hCF : mul_by_2 = 8'h85;
-      8'hC0 : mul_by_2 = 8'hBB;
+      
+      8'hD0 : mul_by_2 = 8'hBB;
       8'hD1 : mul_by_2 = 8'hB9;
       8'hD2 : mul_by_2 = 8'hBF;
       8'hD3 : mul_by_2 = 8'hBD;
@@ -280,6 +293,7 @@ module mix_columns(
       8'hDD : mul_by_2 = 8'hA1;
       8'hDE : mul_by_2 = 8'hA7;
       8'hDF : mul_by_2 = 8'hA5;      
+      
       8'hE0 : mul_by_2 = 8'hDB;
       8'hE1 : mul_by_2 = 8'hD9;
       8'hE2 : mul_by_2 = 8'hDF;
@@ -296,6 +310,7 @@ module mix_columns(
       8'hED : mul_by_2 = 8'hC1;
       8'hEE : mul_by_2 = 8'hC7;
       8'hEF : mul_by_2 = 8'hC5;
+      
       8'hF0 : mul_by_2 = 8'hFB;
       8'hF1 : mul_by_2 = 8'hF9;
       8'hF2 : mul_by_2 = 8'hFF;
@@ -358,7 +373,7 @@ module mix_columns(
       8'h23 : mul_by_3 = 8'h65;
       8'h24 : mul_by_3 = 8'h6C;
       8'h25 : mul_by_3 = 8'h6F;
-      8'h26 : mul_by_3 = 8'hDA;
+      8'h26 : mul_by_3 = 8'h6A;
       8'h27 : mul_by_3 = 8'h69;
       8'h28 : mul_by_3 = 8'h78;
       8'h29 : mul_by_3 = 8'h7B;
@@ -528,7 +543,7 @@ module mix_columns(
       8'hCD : mul_by_3 = 8'h4C;
       8'hCE : mul_by_3 = 8'h49;
       8'hCF : mul_by_3 = 8'h4A;
-      8'hC0 : mul_by_3 = 8'h6B;
+      8'hD0 : mul_by_3 = 8'h6B;
       8'hD1 : mul_by_3 = 8'h68;
       8'hD2 : mul_by_3 = 8'h6D;
       8'hD3 : mul_by_3 = 8'h6E;
