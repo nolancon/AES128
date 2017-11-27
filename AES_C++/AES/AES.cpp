@@ -3,15 +3,22 @@
 
 #include "stdafx.h"
 #include "lookup_tables.h"
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 unsigned char expandedKey[176];
 
+
+ofstream outfile;
+
 //Function Headers
 /****************************************************************************************************************************************************/
 void ConvertToHex(unsigned char x);
+void ConvertToHexForFile(unsigned char x);
 void PrintPlainText(unsigned char* output, int length);
 void PrintHex(unsigned char* output, int length);
+void PrintHexToFile(unsigned char* output, int length);
 
 void KeyExpansionCore(unsigned char* in, unsigned char i);
 void KeyExpansion(unsigned char* inputKey, unsigned char* expandedKeys);
@@ -29,6 +36,7 @@ void run_AES();
 
 int main()
 {
+	
 	run_AES();
 	return 0;
 }
@@ -42,6 +50,17 @@ void ConvertToHex(unsigned char x)
 	if (x % 16 >= 10) cout << (char)((x % 16 - 10) + 'A');
 
 }
+
+void ConvertToHexForFile(unsigned char x)
+{
+	
+	if (x / 16 < 10) outfile << (char)((x / 16) + '0');
+	if (x / 16 >= 10) outfile << (char)((x / 16 - 10) + 'a');
+
+	if (x % 16 < 10) outfile << (char)((x % 16) + '0');
+	if (x % 16 >= 10) outfile << (char)((x % 16 - 10) + 'a');
+}
+
 
 void PrintPlainText(unsigned char* output, int length)
 {
@@ -59,13 +78,24 @@ void PrintHex(unsigned char* output, int length)
 		cout << " ";
 	}
 }
+void PrintHexToFile(unsigned char* output, int length)
+{
+	for (int i = 0; i < length; i++)
+	{
+		ConvertToHexForFile(output[i]);
+		outfile << " ";
+	}
+}
 
 void run_AES()
 {
+	
+	
 	//unsigned char message[] = "My name is Conor Nolan and I am a Computer and Electronics Engineering student at GMIT";		//String to encrypt
 	unsigned char message[] = "Conor Nolan GMIT";		//String to encrypt
 	//unsigned char message[] = "Text to encrypt!";		//String to encrypt
 	//unsigned char message[] = "BCDEFGHIJKLMNOPQ";		//String to encrypt
+	
 
 	unsigned char key[16] = {				//Key to be expanded 
 		1, 2, 3, 4,
@@ -103,6 +133,9 @@ void run_AES()
 
 	cout << "\n\nCypher Text (Hex): " << endl;
 	PrintHex(message, messageLength);
+	outfile.open("C:\\Users\\cmsno\\Desktop\\AES_IO\\CppCipherTextHex.txt", ios::out);
+	PrintHexToFile(message, messageLength);
+	outfile.close();
 
 	KeyExpansion(key, expandedKey);
 	for (int i = 0; i < messageLength; i += 16)
@@ -113,6 +146,8 @@ void run_AES()
 
 	cout << "\n\nDecrypted Plain Text (Hex): " << endl;
 	PrintHex(message, messageLength);
+
+	
 	
 	//delete[] message;
 
