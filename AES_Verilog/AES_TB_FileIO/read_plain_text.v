@@ -16,7 +16,7 @@ always @ (posedge clk)
 	
 initial
 begin
-  	$readmemh("C:\\Users\\cmsno\\Desktop\\AES_IO\\VerilogPlainTextHex.txt", in_ram);
+  	$readmemh("C:\\Users\\cmsno\\Desktop\\AES_IO\\PlainTextHex.txt", in_ram);
 	
 	for(i=0;i<15;i=i+1)
 		begin

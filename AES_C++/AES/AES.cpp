@@ -10,15 +10,20 @@ using namespace std;
 unsigned char expandedKey[176];
 
 
-ofstream outfile;
+ofstream cipherOutfile;
+ofstream plainOutfile;
+ifstream file("C:\\Users\\cmsno\\Desktop\\AES_IO\\CppFileIn.txt");
+
 
 //Function Headers
 /****************************************************************************************************************************************************/
 void ConvertToHex(unsigned char x);
-void ConvertToHexForFile(unsigned char x);
+void ConvertToHexForCipherFile(unsigned char x);
+void ConvertToHexForPlainFile(unsigned char x);
 void PrintPlainText(unsigned char* output, int length);
 void PrintHex(unsigned char* output, int length);
-void PrintHexToFile(unsigned char* output, int length);
+void PrintHexToCipherFile(unsigned char* output, int length);
+void PrintHexToPlainFile(unsigned char* output, int length);
 
 void KeyExpansionCore(unsigned char* in, unsigned char i);
 void KeyExpansion(unsigned char* inputKey, unsigned char* expandedKeys);
@@ -51,16 +56,25 @@ void ConvertToHex(unsigned char x)
 
 }
 
-void ConvertToHexForFile(unsigned char x)
+void ConvertToHexForCipherFile(unsigned char x)
 {
 	
-	if (x / 16 < 10) outfile << (char)((x / 16) + '0');
-	if (x / 16 >= 10) outfile << (char)((x / 16 - 10) + 'a');
+	if (x / 16 < 10) cipherOutfile << (char)((x / 16) + '0');
+	if (x / 16 >= 10) cipherOutfile << (char)((x / 16 - 10) + 'a');
 
-	if (x % 16 < 10) outfile << (char)((x % 16) + '0');
-	if (x % 16 >= 10) outfile << (char)((x % 16 - 10) + 'a');
+	if (x % 16 < 10) cipherOutfile << (char)((x % 16) + '0');
+	if (x % 16 >= 10) cipherOutfile << (char)((x % 16 - 10) + 'a');
 }
 
+void ConvertToHexForPlainFile(unsigned char x)
+{
+
+	if (x / 16 < 10) plainOutfile << (char)((x / 16) + '0');
+	if (x / 16 >= 10) plainOutfile << (char)((x / 16 - 10) + 'a');
+
+	if (x % 16 < 10) plainOutfile << (char)((x % 16) + '0');
+	if (x % 16 >= 10) plainOutfile << (char)((x % 16 - 10) + 'a');
+}
 
 void PrintPlainText(unsigned char* output, int length)
 {
@@ -78,12 +92,20 @@ void PrintHex(unsigned char* output, int length)
 		cout << " ";
 	}
 }
-void PrintHexToFile(unsigned char* output, int length)
+void PrintHexToCipherFile(unsigned char* output, int length)
 {
 	for (int i = 0; i < length; i++)
 	{
-		ConvertToHexForFile(output[i]);
-		outfile << " ";
+		ConvertToHexForCipherFile(output[i]);
+		cipherOutfile << " ";
+	}
+}
+void PrintHexToPlainFile(unsigned char* output, int length)
+{
+	for (int i = 0; i < length; i++)
+	{
+		ConvertToHexForPlainFile(output[i]);
+		plainOutfile << " ";
 	}
 }
 
@@ -92,9 +114,19 @@ void run_AES()
 	
 	
 	//unsigned char message[] = "My name is Conor Nolan and I am a Computer and Electronics Engineering student at GMIT";		//String to encrypt
-	unsigned char message[] = "Conor Nolan GMIT";		//String to encrypt
-	//unsigned char message[] = "Text to encrypt!";		//String to encrypt
+	//unsigned char message[] = "Conor Nolan GMIT";		//String to encrypt
+	unsigned char message[] = "Text to encrypt!";		//String to encrypt
 	//unsigned char message[] = "BCDEFGHIJKLMNOPQ";		//String to encrypt
+
+	//unsigned char message[8];
+
+	//if (file.is_open())
+	//{
+	//	for (int i = 0; i < 16; ++i)
+		//{
+		//	file >> message[i];
+		//}
+	//}
 	
 
 	unsigned char key[16] = {				//Key to be expanded 
@@ -106,7 +138,10 @@ void run_AES()
 
 	//(Padding Removed in this version) Message is encrypted in blocks of 16. Therefore if a block is less than 16, it must be 'padded' with 0s up to 16 bytes in size
 	int messageLength = strlen((const char*)message);	//Get length of message and store in originalLen
-
+	
+	plainOutfile.open("C:\\Users\\cmsno\\Desktop\\AES_IO\\PlainTextHex.txt", ios::out);
+	PrintHexToPlainFile(message, messageLength);
+	plainOutfile.close();
 
 	cout << "Plain Text : " << endl;				//print message in plain text (before padding)
 	PrintPlainText(message, messageLength);
@@ -133,9 +168,9 @@ void run_AES()
 
 	cout << "\n\nCypher Text (Hex): " << endl;
 	PrintHex(message, messageLength);
-	outfile.open("C:\\Users\\cmsno\\Desktop\\AES_IO\\CppCipherTextHex.txt", ios::out);
-	PrintHexToFile(message, messageLength);
-	outfile.close();
+	cipherOutfile.open("C:\\Users\\cmsno\\Desktop\\AES_IO\\CppCipherTextHex.txt", ios::out);
+	PrintHexToCipherFile(message, messageLength);
+	cipherOutfile.close();
 
 	KeyExpansion(key, expandedKey);
 	for (int i = 0; i < messageLength; i += 16)
