@@ -1,29 +1,27 @@
-// AES.cpp : Defines the entry point for the console application.
-//
 
 #include "stdafx.h"
 #include "lookup_tables.h"
 #include <iostream>
 #include <fstream>
+
+#include <chrono>
+#include <math.h>
+#include <ctime>
+
+
 using namespace std;
+
+
 
 unsigned char expandedKey[176];
 
 
-ofstream cipherOutfile;
-ofstream plainOutfile;
-ifstream file("C:\\Users\\cmsno\\Desktop\\AES_IO\\CppFileIn.txt");
 
 
 //Function Headers
 /****************************************************************************************************************************************************/
-void ConvertToHex(unsigned char x);
-void ConvertToHexForCipherFile(unsigned char x);
-void ConvertToHexForPlainFile(unsigned char x);
 void PrintPlainText(unsigned char* output, int length);
-void PrintHex(unsigned char* output, int length);
-void PrintHexToCipherFile(unsigned char* output, int length);
-void PrintHexToPlainFile(unsigned char* output, int length);
+
 
 void KeyExpansionCore(unsigned char* in, unsigned char i);
 void KeyExpansion(unsigned char* inputKey, unsigned char* expandedKeys);
@@ -39,42 +37,25 @@ void AES_Decrypt(unsigned char* message, unsigned char* key);
 void run_AES();
 /******************************************************************************************************************************************************/
 
+
+
 int main()
 {
-	
-	run_AES();
+
+	clock_t t;
+	t = clock();
+	for (int i = 0; i < 1000000; i++) {
+		run_AES();
+	}
+	t = (clock() - t);
+	cout << t;
+
+	std::cin.ignore();
 	return 0;
-}
-
-void ConvertToHex(unsigned char x)
-{
-	if (x / 16 < 10) cout << (char)((x / 16) + '0');
-	if (x / 16 >= 10) cout << (char)((x / 16 - 10) + 'A');
-
-	if (x % 16 < 10) cout << (char)((x % 16) + '0');
-	if (x % 16 >= 10) cout << (char)((x % 16 - 10) + 'A');
-
-}
-
-void ConvertToHexForCipherFile(unsigned char x)
-{
 	
-	if (x / 16 < 10) cipherOutfile << (char)((x / 16) + '0');
-	if (x / 16 >= 10) cipherOutfile << (char)((x / 16 - 10) + 'a');
 
-	if (x % 16 < 10) cipherOutfile << (char)((x % 16) + '0');
-	if (x % 16 >= 10) cipherOutfile << (char)((x % 16 - 10) + 'a');
 }
 
-void ConvertToHexForPlainFile(unsigned char x)
-{
-
-	if (x / 16 < 10) plainOutfile << (char)((x / 16) + '0');
-	if (x / 16 >= 10) plainOutfile << (char)((x / 16 - 10) + 'a');
-
-	if (x % 16 < 10) plainOutfile << (char)((x % 16) + '0');
-	if (x % 16 >= 10) plainOutfile << (char)((x % 16 - 10) + 'a');
-}
 
 void PrintPlainText(unsigned char* output, int length)
 {
@@ -84,50 +65,27 @@ void PrintPlainText(unsigned char* output, int length)
 	}
 }
 
-void PrintHex(unsigned char* output, int length)
-{
-	for (int i = 0; i < length; i++)
-	{
-		ConvertToHex(output[i]);
-		cout << " ";
-	}
-}
-void PrintHexToCipherFile(unsigned char* output, int length)
-{
-	for (int i = 0; i < length; i++)
-	{
-		ConvertToHexForCipherFile(output[i]);
-		cipherOutfile << " ";
-	}
-}
-void PrintHexToPlainFile(unsigned char* output, int length)
-{
-	for (int i = 0; i < length; i++)
-	{
-		ConvertToHexForPlainFile(output[i]);
-		plainOutfile << " ";
-	}
-}
 
 void run_AES()
 {
-	
-	
+
+
+
 	//unsigned char message[] = "My name is Conor Nolan and I am a Computer and Electronics Engineering student at GMIT";		//String to encrypt
 	unsigned char message[] = "Conor Nolan GMIT";		//String to encrypt
 	//unsigned char message[] = "Text to encrypt!";		//String to encrypt
-	//unsigned char message[] = "BCDEFGHIJKLMNOPQ";		//String to encrypt
+														//unsigned char message[] = "BCDEFGHIJKLMNOPQ";		//String to encrypt
 
-	//unsigned char message[8];
+														//unsigned char message[8];
 
-	//if (file.is_open())
-	//{
-		//for (int i = 0; i < 16; ++i)
-		//{
-			//file >> message[i];
-		//}
-	//}
-	
+														//if (file.is_open())
+														//{
+														//	for (int i = 0; i < 16; ++i)
+														//{
+														//	file >> message[i];
+														//}
+														//}
+
 
 	unsigned char key[16] = {				//Key to be expanded 
 		1, 2, 3, 4,
@@ -138,22 +96,13 @@ void run_AES()
 
 	//(Padding Removed in this version) Message is encrypted in blocks of 16. Therefore if a block is less than 16, it must be 'padded' with 0s up to 16 bytes in size
 	int messageLength = strlen((const char*)message);	//Get length of message and store in originalLen
-	
-	plainOutfile.open("C:\\Users\\cmsno\\Desktop\\AES_IO\\PlainTextHex.txt", ios::out);
-	PrintHexToPlainFile(message, messageLength);
-	plainOutfile.close();
 
-	cout << "Plain Text : " << endl;				//print message in plain text (before padding)
-	PrintPlainText(message, messageLength);
-	
-	cout << "\n\nPlain Text (Hex): " << endl;		//print message in hex (before padding)
-	PrintHex(message, messageLength);
-	
-	cout << "\n";
 
-	cout << "\n\nKey" << endl;						//print key in hex
-	PrintHex(key, 16);
+	//cout << "Plain Text : " << endl;				//print message in plain text (before padding)
+	//PrintPlainText(message, messageLength);
+
 	
+
 
 
 	//Expand the Keys
@@ -163,30 +112,26 @@ void run_AES()
 	for (int i = 0; i < messageLength; i += 16)
 		AES_Encrypt(message + i, key);
 
-	cout << "\n\nCypher Text: \n";
-	PrintPlainText(message, messageLength);
 
-	cout << "\n\nCypher Text (Hex): " << endl;
-	PrintHex(message, messageLength);
-	cipherOutfile.open("C:\\Users\\cmsno\\Desktop\\AES_IO\\CppCipherTextHex.txt", ios::out);
-	PrintHexToCipherFile(message, messageLength);
-	cipherOutfile.close();
+	//cout << "Cipher Text : " << endl;				//print message in plain text (before padding)
+	//PrintPlainText(message, messageLength);
 
 	KeyExpansion(key, expandedKey);
+
+
 	for (int i = 0; i < messageLength; i += 16)
 		AES_Decrypt(message + i, key);
 
-	cout << "\n\nDecrypted Plain Text : " << endl;
-	PrintPlainText(message, messageLength);
+	//std::clock_t c_dec_end = std::clock();
 
-	cout << "\n\nDecrypted Plain Text (Hex): " << endl;
-	PrintHex(message, messageLength);
+	//cout << "\nDecrypted Plain Text : " << endl;
+	//PrintPlainText(message, messageLength);
 
-	
 	
 	//delete[] message;
 
-	std::cin.ignore();
+	
+
 }
 
 void KeyExpansionCore(unsigned char* in, unsigned char i)
@@ -244,12 +189,7 @@ void KeyExpansion(unsigned char* inputKey, unsigned char* expandedKeys)
 			bytesGenerated++;
 		}
 	}
-	cout << "\n\nExpanded Key" << endl;
-	for (int i = 0; i < 176; i++)
-	{
-		ConvertToHex(expandedKeys[i]);
-		cout << " ";
-	}
+	
 
 }
 
@@ -268,7 +208,6 @@ void AES_Encrypt(unsigned char* message, unsigned char* key)
 									//Rounds
 	for (int i = 0; i< numberOfRounds; i++)
 	{
-		cout << "\n\nRound " << i + 1 << endl;	//Display Round number
 		SubBytes(state);			//Pass state to SubBytes
 		ShiftRows(state);			//Pass state to ShiftRows
 		MixColumns(state);			//Pass state to MixColumns
@@ -277,7 +216,6 @@ void AES_Encrypt(unsigned char* message, unsigned char* key)
 
 
 																//Final Round
-	cout << "\n\nFinal Round " << endl;
 	SubBytes(state);				//Pass state to SubBytes
 	ShiftRows(state);				//Pass state to ShiftRows
 	AddRoundKey(state, expandedKey + 160); //Pass state to AddRoundKey, also pass last 16 bytes of 176 expandedKey
@@ -287,6 +225,8 @@ void AES_Encrypt(unsigned char* message, unsigned char* key)
 	{
 		message[i] = state[i];
 	}
+
+	
 }
 
 
@@ -300,8 +240,6 @@ void AES_Decrypt(unsigned char* message, unsigned char* key)
 	}
 
 	//Initial Round
-	cout << "\n\nInitial Round " << endl;
-
 	AddRoundKey(state, expandedKey + 160);		//Pass state and last 16 bytes of expandedKey to AddRoundKey (Last 16 bytes because we are now decrypting ie working backwards)
 	InvShiftRows(state);						//Pass state to InvShiftRows
 	InvSubBytes(state);							//Pass state to InvSubBytes 
@@ -309,7 +247,6 @@ void AES_Decrypt(unsigned char* message, unsigned char* key)
 												//Rounds
 	for (int i = 0; i< numberOfRounds; i++)
 	{
-		cout << "\n\nRound " << i + 2 << endl;		//Display Round number
 
 		AddRoundKey(state, expandedKey + (160 - ((i + 1) * 16)));		//Pass state to AddRoundKey, also pass expanded Key 															
 																		//This time decrementing in 16 bytes per round starting at 160 (161-176 used in Initial Round 		
@@ -329,32 +266,13 @@ void AES_Decrypt(unsigned char* message, unsigned char* key)
 	}
 }
 
-void AddRoundKey(unsigned char* state, unsigned char* roundKey)
-{
-	for (int i = 0; i< 16; i++)
-	{
-		state[i] ^= roundKey[i];	//XOR each byte in state with round key
-	}
-	cout << "\nAddRoundKey" << endl;
-	for (int i = 0; i < 16; i++)
-	{
-		ConvertToHex(state[i]);		//Print state in Hex
-		cout << " ";
-	}
-}
-
 void SubBytes(unsigned char* state)		//SubsBytes - Substitute bytes in state with bytes in s_box (encryption)
 {
 	for (int i = 0; i < 16; i++)
 	{
 		state[i] = s_box[state[i]];			//perform sub
 	}
-	cout << "\nSubBytes" << endl;			
-	for (int i = 0; i < 16; i++)
-	{
-		ConvertToHex(state[i]);					//Print state in Hex
-		cout << " ";
-	}
+	
 }
 
 void InvSubBytes(unsigned char* state)		//InvSubsBytes - Substitute bytes in state with bytes in inv_s_box (decryption - undo subBytes)
@@ -363,12 +281,7 @@ void InvSubBytes(unsigned char* state)		//InvSubsBytes - Substitute bytes in sta
 	{
 		state[i] = inv_s_box[state[i]];		//perform sub
 	}
-	cout << "\nInverted SubBytes" << endl;
-	for (int i = 0; i < 16; i++)
-	{
-		ConvertToHex(state[i]);					//Print state in Hex
-		cout << " ";
-	}
+	
 
 }
 
@@ -376,12 +289,10 @@ void InvSubBytes(unsigned char* state)		//InvSubsBytes - Substitute bytes in sta
 void ShiftRows(unsigned char* state)
 {
 	/* Shift Rows left (encryption)
-
-		|  0 |  4 |  8 | 12 |	=>	|  0 |  4 |  8 | 12 |	-No movement
-		|  1 |  5 |  9 | 13 |   =>	|  5 |  9 | 13 |  1 | 	-Shift 1 spaces left
-		|  2 |  6 | 10 | 14 |	=>	| 10 | 14 |  2 |  6 |	-Shift 2 spaces left
-		|  3 |  7 | 11 | 15 |   =>	| 15 |  3 |  7 | 11 |   -Shift 3 spaces left
-
+	|  0 |  4 |  8 | 12 |	=>	|  0 |  4 |  8 | 12 |	-No movement
+	|  1 |  5 |  9 | 13 |   =>	|  5 |  9 | 13 |  1 | 	-Shift 1 spaces left
+	|  2 |  6 | 10 | 14 |	=>	| 10 | 14 |  2 |  6 |	-Shift 2 spaces left
+	|  3 |  7 | 11 | 15 |   =>	| 15 |  3 |  7 | 11 |   -Shift 3 spaces left
 	*/
 	unsigned char tmp[16];
 	tmp[0] = state[0];
@@ -409,12 +320,7 @@ void ShiftRows(unsigned char* state)
 		state[i] = tmp[i];			//copy tmp back into state
 	}
 
-	cout << "\nShiftRows" << endl;
-	for (int i = 0; i < 16; i++)
-	{
-		ConvertToHex(state[i]);		//Print state in Hex
-		cout << " ";
-	}
+
 
 }
 
@@ -422,12 +328,10 @@ void ShiftRows(unsigned char* state)
 void InvShiftRows(unsigned char* state)
 {
 	/* undo shift rows left (decryption)
-
-		|  0 |  4 |  8 | 12 |	=>	|  0 |  4 |  8 | 12 |
-		|  5 |  8 | 13 |  1 |   =>	|  1 |  5 |  9 | 13 | 
-		| 10 | 14 |  2 |  6 |	=>	|  2 |  6 | 10 | 14 |	
-		| 15 |  3 |  7 | 11 |   =>	|  3 |  7 | 11 | 15 |  
-
+	|  0 |  4 |  8 | 12 |	=>	|  0 |  4 |  8 | 12 |
+	|  5 |  8 | 13 |  1 |   =>	|  1 |  5 |  9 | 13 |
+	| 10 | 14 |  2 |  6 |	=>	|  2 |  6 | 10 | 14 |
+	| 15 |  3 |  7 | 11 |   =>	|  3 |  7 | 11 | 15 |
 	*/
 	unsigned char tmp[16];
 	tmp[0] = state[0];
@@ -455,28 +359,20 @@ void InvShiftRows(unsigned char* state)
 		state[i] = tmp[i];
 	}
 
-	cout << "\nInverted ShiftRows" << endl;
-	for (int i = 0; i < 16; i++)
-	{
-		ConvertToHex(state[i]);		//Print state in Hex
-		cout << " ";
-	}
-
+	
 }
 
 
 void MixColumns(unsigned char* state)
 {
 	/*
-		16 bytes of plain text is multiplied byte special matrix. Look-up tables mul2 and mul3 are implemented for speed and convenience
-
-		Plain Text:					Special Matrix:				Products XORd together:		res = Result of calculation.
-																(1st 4 bytes with top row)	The same is done for all rows/cols
-
-		|  P |  n |  x |  l |	.	|  2 |  3 |  1 |  1 |	=>	(P*2)+(l*3)+(a*1)+(i*1) =>  |res|   |   |   |
-		|  l |    |  t |  o |   	|  1 |  2 |  3 |  1 |									|   |   |   |   |
-		|  a |  T |    |  c |		|  1 |  1 |  2 |  3 |									|   |   |   |   |
-		|  i |  e |  B |  k |   	|  3 |  1 |  1 |  2 |									|   |   |   |   |
+	16 bytes of plain text is multiplied byte special matrix. Look-up tables mul2 and mul3 are implemented for speed and convenience
+	Plain Text:					Special Matrix:				Products XORd together:		res = Result of calculation.
+	(1st 4 bytes with top row)	The same is done for all rows/cols
+	|  P |  n |  x |  l |	.	|  2 |  3 |  1 |  1 |	=>	(P*2)+(l*3)+(a*1)+(i*1) =>  |res|   |   |   |
+	|  l |    |  t |  o |   	|  1 |  2 |  3 |  1 |									|   |   |   |   |
+	|  a |  T |    |  c |		|  1 |  1 |  2 |  3 |									|   |   |   |   |
+	|  i |  e |  B |  k |   	|  3 |  1 |  1 |  2 |									|   |   |   |   |
 	*/
 	unsigned char tmp[16];
 
@@ -504,22 +400,15 @@ void MixColumns(unsigned char* state)
 	{
 		state[i] = tmp[i];
 	}
-	cout << "\nMixColumns" << endl;
-	for (int i = 0; i < 16; i++)
-	{
-		ConvertToHex(state[i]);
-		cout << " ";
-	}
+	
 }
 
 void InvMixColumns(unsigned char* state)
 {
 	/*
 	16 bytes of cypher text is multiplied by special matrix. Look-up tables mul9, mul11, mul13 and mul4 are implemented for speed and convenience
-
 	Plain Text:					Special Matrix:				Products XORd together:		res = Result of calculation.
-															(1st 4 bytes with top row)	The same is done for all rows/cols
-
+	(1st 4 bytes with top row)	The same is done for all rows/cols
 	|  C |  e |  e |  B |	.	| 14 | 11 | 13 |  9 |	=>	(C*14)+(y*11)+(p*13)+(h*9)  =>	|res|   |   |   |
 	|  y |  r |  x |  l |   	|  9 | 14 | 11 | 13 |										|   |   |   |   |
 	|  p |    |  t |  o |		| 13 |  9 | 14 | 11 |										|   |   |   |   |
@@ -552,14 +441,14 @@ void InvMixColumns(unsigned char* state)
 	{
 		state[i] = temp[i];
 	}
-	cout << "\nMixColumns" << endl;
-	for (int i = 0; i < 16; i++)
-	{
-		ConvertToHex(state[i]);		//Print state in Hex
-		cout << " ";
-	}
+	
 }
 
-
-
-
+void AddRoundKey(unsigned char* state, unsigned char* roundKey)
+{
+	for (int i = 0; i< 16; i++)
+	{
+		state[i] ^= roundKey[i];	//XOR each byte in state with round key
+	}
+	
+}
