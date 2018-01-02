@@ -21,10 +21,10 @@ module decrypt_initial_round(
     inv_sub_bytes i_inv_sub_bytes(. clk(clk),. state_isb_in(state_isr),. state_isb_out(state_isb));
     
     
-    always @(posedge clk)
-    begin
-        state_round_reg <= state_round_next;
-    end
+//    always @(posedge clk)
+//    begin
+//        state_round_reg <= state_round_next;
+//    end
 	
 	always @*
     begin
@@ -32,6 +32,6 @@ module decrypt_initial_round(
 		state_round_next = state_isb;
     end
     
-    assign state_round = state_round_reg;
+    assign state_round = state_round_next;
     
 endmodule

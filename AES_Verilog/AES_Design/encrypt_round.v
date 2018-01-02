@@ -24,10 +24,10 @@ module encrypt_round(
 	
 	
 	
-	always @(posedge clk)
-    begin
-        enc_state_round_reg <= enc_state_round_next;
-    end
+//	always @(posedge clk)
+//    begin
+//        enc_state_round_reg <= enc_state_round_next;
+//    end
 	
 	always @*
     begin
@@ -35,6 +35,6 @@ module encrypt_round(
 		enc_state_round_next = state_ark_out;
     end
     
-    assign enc_state_round = enc_state_round_reg;
+    assign enc_state_round = enc_state_round_next;
 	
 endmodule

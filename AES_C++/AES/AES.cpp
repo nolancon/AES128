@@ -118,8 +118,7 @@ void run_AES()
 	//unsigned char message[] = "Text to encrypt!";		//String to encrypt
 	//unsigned char message[] = "BCDEFGHIJKLMNOPQ";		//String to encrypt
 
-	//unsigned char message[8];
-
+	
 	//if (file.is_open())
 	//{
 		//for (int i = 0; i < 16; ++i)

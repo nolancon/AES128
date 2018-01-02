@@ -29,8 +29,8 @@ module AES_top_tb();
 	wire [127:0] cipher_text;
 	wire [127:0] decrypted_plain_text;
 
-	wire [127:0] file_in;
-	wire [127:0] file_out;
+//	wire [127:0] file_in;
+//	wire [127:0] file_out;
 //
 //	RAM_IN i_RAM_IN(
 //		. clk(clk),
@@ -40,8 +40,8 @@ module AES_top_tb();
 	    . clk(clk), 
 	    . key(key), 
 	    . plain_text(plain_text),
-	    . file_in(file_in),
-	    . file_out(file_out),
+//	    . file_in(file_in),
+//	    . file_out(file_out),
 	    . expanded_key(expanded_key), 
 	    . cipher_text(cipher_text),
 	    . decrypted_plain_text(decrypted_plain_text));
@@ -63,7 +63,7 @@ module AES_top_tb();
     
     assign  key = 128'h100F0E0D0C0B0A090807060504030201;
     
-//    assign plain_text = 128'h00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1; 
+    assign plain_text = 128'h00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1; 
 //    assign plain_text = 128'hF0EFEEEDECEBEAE9E8E7E6E5E4E3E2E1; 
 //    assign plain_text = 128'hE0DFDEDDDCDBDAD9D8D7D6D5D4D3D2D1; 
 //    assign plain_text = 128'hD0CFCECDCCCBCAC9C8C7C6C5C4C3C2C1; 

@@ -49,7 +49,7 @@ module inv_mix_columns(
 
     end
     
-    assign state_imc_out = state_imc_out_reg;
+    assign state_imc_out = state_imc_out_next;
 	
 	      function [7:0] mul_by_9;
         input [7:0] x;

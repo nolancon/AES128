@@ -10,10 +10,10 @@ module sub_bytes(
 	reg [127:0] state_sb_out_reg; 
 	reg [127:0] state_sb_out_next;
 	
-	always @(posedge clk)
-    begin
-        state_sb_out_reg <= state_sb_out_next;
-    end
+//	always @(posedge clk)
+//    begin
+//        state_sb_out_reg <= state_sb_out_next;
+//    end
 	
 	always @*
     begin
@@ -39,7 +39,7 @@ module sub_bytes(
         state_sb_out_next[127:120] = sbox(state_sb_out_next[127:120]);  //15
 	end
     
-    assign state_sb_out = state_sb_out_reg;
+    assign state_sb_out = state_sb_out_next;
     
 	    function [7:0] sbox;
 	    input[7:0] address;

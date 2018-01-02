@@ -20,18 +20,18 @@ module encrypt_final_round(
 	add_round_key i_add_round_key(. clk(clk),. round_key(round_key),. state_ark_in(state_sr),. state_ark_out(state_ark));
 	
 	
-	
-	always @(posedge clk)
-    begin
-        state_round_reg <= state_round_next;
-    end
-	
+//	
+//	always @(posedge clk)
+//    begin
+//        state_round_reg <= state_round_next;
+//    end
+//	
 	always @*
     begin
     	//Combinational logic
 		state_round_next = state_ark;
     end
     
-    assign state_round = state_round_reg;
+    assign state_round = state_round_next;
 	
 endmodule

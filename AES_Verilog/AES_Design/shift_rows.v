@@ -14,10 +14,10 @@ module shift_rows(
 	
 	
 	
-	always @(posedge clk)
-    begin
-        state_sr_out_reg <= state_sr_out_next;
-    end
+//	always @(posedge clk)
+//    begin
+//        state_sr_out_reg <= state_sr_out_next;
+//    end
 	
 	always @*
     begin
@@ -48,6 +48,6 @@ module shift_rows(
 	    state_sr_out_next[127:0] = temp[127:0];
     end
     
-    assign state_sr_out = state_sr_out_reg;
+    assign state_sr_out = state_sr_out_next;
     
 endmodule

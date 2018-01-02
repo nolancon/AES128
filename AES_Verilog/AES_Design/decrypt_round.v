@@ -27,10 +27,10 @@ module decrypt_round(
 	
 	
 	
-	always @(posedge clk)
-    begin
-        dec_state_round_reg <= dec_state_round_next;
-    end
+//	always @(posedge clk)
+//    begin
+//        dec_state_round_reg <= dec_state_round_next;
+//    end
 	
 	always @*
     begin
@@ -38,7 +38,7 @@ module decrypt_round(
 		dec_state_round_next = state_isb_out;
     end
     
-    assign dec_state_round = dec_state_round_reg;
+    assign dec_state_round = dec_state_round_next;
     
 	
 endmodule

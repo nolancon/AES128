@@ -15,17 +15,17 @@ module mix_columns(
 	
 	
 	
-	always @(posedge clk)
-    begin
-        state_mc_out_reg <= state_mc_out_next;
-    end
+//	always @(posedge clk)
+//    begin
+//        state_mc_out_reg <= state_mc_out_next;
+//    end
 	
 	always @*
     begin
     	//Combinational logic
     	state_mc_out_next = state_mc_in;
     	//Mix Columns
-        temp[7:0] =  mul_by_2(state_mc_out_next[7:0]) ^ mul_by_3(state_mc_out_next[15:8]) ^ state_mc_out_next[23:16] ^ state_mc_out_next[31:24];
+        temp[7:0] =  mul_by_2(state_mc_out_next[7:0]) ^ mul_by_3(state_mc_out_next[15:8]) ^ state_mc_out_next[23:16] ^ state_mc_out_next[31:24];        
         temp[15:8] = state_mc_out_next[7:0] ^ mul_by_2(state_mc_out_next[15:8]) ^ mul_by_3(state_mc_out_next[23:16]) ^ state_mc_out_next[31:24];
         temp[23:16] = state_mc_out_next[7:0] ^ state_mc_out_next[15:8] ^ mul_by_2(state_mc_out_next[23:16]) ^ mul_by_3(state_mc_out_next[31:24]);
         temp[31:24] = mul_by_3(state_mc_out_next[7:0]) ^ state_mc_out_next[15:8] ^ state_mc_out_next[23:16] ^ mul_by_2(state_mc_out_next[31:24]);
@@ -49,7 +49,7 @@ module mix_columns(
 
     end
     
-    assign state_mc_out = state_mc_out_reg;
+    assign state_mc_out = state_mc_out_next;
 	
 	
 	function [7:0] mul_by_2;

@@ -14,10 +14,10 @@ module inv_shift_rows(
 	
 	
 	
-	always @(posedge clk)
-    begin
-        state_isr_out_reg <= state_isr_out_next;
-    end
+//	always @(posedge clk)
+//    begin
+//        state_isr_out_reg <= state_isr_out_next;
+//    end
 	
 	always @*
     begin
@@ -48,6 +48,6 @@ module inv_shift_rows(
 	    state_isr_out_next[127:0] = temp[127:0];
     end
     
-    assign state_isr_out = state_isr_out_reg;
+    assign state_isr_out = state_isr_out_next;
     
 endmodule

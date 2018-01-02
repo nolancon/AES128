@@ -19,10 +19,10 @@ module add_round_key(
 	
 	
 	
-	always @(posedge clk)
-    begin
-        state_ark_out_reg <= state_ark_out_next;
-    end
+//	always @(posedge clk)
+//    begin
+//        state_ark_out_reg <= state_ark_out_next;
+//    end
 	
 	always @*
     begin
@@ -33,7 +33,7 @@ module add_round_key(
         state_ark_out_next = state_ark_out_temp[127:0] ^ round_key_temp[127:0];
     end
     
-    assign state_ark_out = state_ark_out_reg;
+    assign state_ark_out = state_ark_out_next;
 	
 	
 endmodule
