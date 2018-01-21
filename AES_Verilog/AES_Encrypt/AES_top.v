@@ -4,23 +4,25 @@
 module AES_top(
     input wire clk,
     input wire [127:0] key,
+    
+//    output wire [127:0] plain_in,
+//    output wire [15:0] led,
+//    output wire [1407:0] expanded_key,
     output wire [127:0] cipher_out
 	);
-
 	
 	wire [1407:0] expanded_key;
 	wire [127:0] round1_key, round2_key, round3_key, round4_key, round5_key,
 				 round6_key, round7_key, round8_key, round9_key, round10_key; 
-
-	wire [127:0] key_in, plain_in;
 	wire [127:0] cipher_text;
+	wire [127:0] key_in, plain_in;
 	
 	reg [127:0] key_;
 
-	always @(posedge clk)
-    begin
-        key_[127:0] = 128'h100F0E0D0C0B0A090807060504030201;
-    end
+//	always @(posedge clk)
+//    begin
+//        key_[127:0] = 128'h100F0E0D0C0B0A090807060504030201;
+//    end
 	
 	read_ram i_read_ram(
 		. clk(clk),
