@@ -32,10 +32,10 @@ module AES_top_tb();
     AES_top i_AES_top(
 	    . clk(clk),
 	    . key(key),
-//	    . plain_text(plain_text),
+//	    . plain_in(plain_text),
 //	    . led(led),
 //	    . expanded_key(expanded_key),
-	    . cipher_text(cipher_text)); 
+	    . cipher_out(cipher_text)); 
 
     always
     begin
@@ -44,12 +44,12 @@ module AES_top_tb();
         clk = 1'b0;
         #(T/2);
 	   
-	    if (cipher_text[7:0] == 8'h87) 
+	    if (plain_text[7:0] == 8'hf1) 
 			led[0:0] = 1'b1;
 		else
 			led[0:0] = 1'b0;
 	
-	    if (cipher_text[15:8] == 8'h8f) 
+	    if (plain_text[15:8] == 8'hf2) 
 			led[1:1] = 1'b1;
 		else
 			led[1:1] = 1'b0;
