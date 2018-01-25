@@ -27,15 +27,15 @@ module AES_top_tb();
     wire [1407:0] expanded_key;
 	wire [127:0] plain_text;
 	wire [127:0] cipher_text;
-	reg [15:0] led;
+	wire [15:0] led;
 	
     AES_top i_AES_top(
 	    . clk(clk),
 	    . key(key),
-//	    . plain_in(plain_text),
-//	    . led(led),
-//	    . expanded_key(expanded_key),
-	    . cipher_out(cipher_text)); 
+	    . plain_in(plain_text),
+	    . led(led),
+	    . expanded_key(expanded_key),
+	    . cipher_text(cipher_text)); 
 
     always
     begin
@@ -44,15 +44,15 @@ module AES_top_tb();
         clk = 1'b0;
         #(T/2);
 	   
-	    if (plain_text[7:0] == 8'hf1) 
-			led[0:0] = 1'b1;
-		else
-			led[0:0] = 1'b0;
-	
-	    if (plain_text[15:8] == 8'hf2) 
-			led[1:1] = 1'b1;
-		else
-			led[1:1] = 1'b0;
+//	    if (cipher_text[7:0] == 8'h39) 
+//			led[0:0] = 1'b1;
+//		else
+//			led[0:0] = 1'b0;
+//	
+//	    if (cipher_text[15:8] == 8'h8f) 
+//			led[1:1] = 1'b1;
+//		else
+//			led[1:1] = 1'b0;
     
     end
     
@@ -65,7 +65,7 @@ module AES_top_tb();
     
     assign key = 128'h100F0E0D0C0B0A090807060504030201;
     
-//    assign plain_text = 128'h00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1; 
+    assign plain_text = 128'h00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1; 
 //    assign plain_text = 128'hF0EFEEEDECEBEAE9E8E7E6E5E4E3E2E1; 
 //    assign plain_text = 128'hE0DFDEDDDCDBDAD9D8D7D6D5D4D3D2D1; 
 //    assign plain_text = 128'hD0CFCECDCCCBCAC9C8C7C6C5C4C3C2C1; 

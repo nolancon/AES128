@@ -2,20 +2,20 @@
 
 
 
-module expand_key(
+module expand_key_core(
     input wire clk,
-    input wire [127:0] key,
-    output wire[1407:0] expanded_key
+    input wire [1407:0] expanded_key_in,
+    input wire [7:0] rcon_index_in,
+   output wire[1407:0] expanded_key_out
     );
      
     //Internal Signals
     reg[1407:0] expanded_key_next, expanded_key_reg;
+	
     reg[255:0] expanded_key_temp;
     reg[31:0] core_state;
     reg[7:0] temp;
-    integer index;
-    integer rcon_index = 1;
-    
+	reg[7:0] rcon_index;
     
     
     always @(posedge clk)
@@ -27,50 +27,57 @@ module expand_key(
     always @*
     begin
    
+   rcon_index = rcon_index_in;
 	    
-    expanded_key_temp[127:0]=key[127:0];
-        for(index=0;index<10;index=index+1)
-        begin
-            core_state[31:0]=expanded_key_temp[127: 96];//pass last 4 bytes of key to coreState
-            
-            //------------------------------------------------------------KeyExpansionCore
-            //Rotate left
-            temp=core_state[7:0];
-            core_state[31:0] = core_state[31:0] >> 8;
-            core_state[31:24]=temp;
-            
-            //Perform S-Box substitution
-            core_state[31:24] = sbox(core_state[31:24]);
-            core_state[23:16] = sbox(core_state[23:16]);
-            core_state[15:8] = sbox(core_state[15:8]);
-            core_state[7:0] = sbox(core_state[7:0]);
+    expanded_key_next[1151:0]=expanded_key_in[1151:0];
+	expanded_key_temp[127:0]=expanded_key_in[1279:1152];
 
-            //R-Con First byte XORd with corresponding Rcon Value 
-            core_state[7:0] = core_state[7:0]^Rcon(rcon_index);
-            rcon_index = rcon_index + 1;
-            //------------------------------------------------------------KeyExpansionCore
+//        for(index=0;index<10;index=index+1)
+//        begin
+    core_state[31:0]=expanded_key_temp[127: 96];//pass last 4 bytes of key to coreState
+    
+    //------------------------------------------------------------KeyExpansionCore
+    //Rotate left
+    temp=core_state[7:0];
+    core_state[31:0] = core_state[31:0] >> 8;
+    core_state[31:24]=temp;
+    
+    //Perform S-Box substitution
+    core_state[31:24] = sbox(core_state[31:24]);
+    core_state[23:16] = sbox(core_state[23:16]);
+    core_state[15:8] = sbox(core_state[15:8]);
+    core_state[7:0] = sbox(core_state[7:0]);
 
-            //Perform XOR in blocks of 4 bytes to expand key
-            expanded_key_temp[159:128]=core_state[31:0]^expanded_key_temp[31:0];
-            expanded_key_temp[191:160]=expanded_key_temp[159:128]^expanded_key_temp[63:32];
-            expanded_key_temp[223:192]=expanded_key_temp[191:160]^expanded_key_temp[95:64];
-            expanded_key_temp[255:224]=expanded_key_temp[223:192]^expanded_key_temp[127:96];  
-            /********************************************************************************/
+    //R-Con First byte XORd with corresponding Rcon Value 
+    core_state[7:0] = core_state[7:0]^Rcon(rcon_index);
+//            rcon_index = rcon_index + 1;
+    //------------------------------------------------------------KeyExpansionCore
 
-            expanded_key_next[1407:1152] = expanded_key_temp[255:0];
-            core_state[31:0] = expanded_key_next[1407:1376];
-            expanded_key_temp[127:0] = expanded_key_temp[255:128];
-            expanded_key_next = expanded_key_next >>128;
-            if(index==9)
-                expanded_key_next = expanded_key_next <<128;
-        end
-        expanded_key_next[127:0]=key[127:0];
+    //Perform XOR in blocks of 4 bytes to expand key
+    expanded_key_temp[159:128]=core_state[31:0]^expanded_key_temp[31:0];
+    expanded_key_temp[191:160]=expanded_key_temp[159:128]^expanded_key_temp[63:32];
+    expanded_key_temp[223:192]=expanded_key_temp[191:160]^expanded_key_temp[95:64];
+    expanded_key_temp[255:224]=expanded_key_temp[223:192]^expanded_key_temp[127:96];  
+    /********************************************************************************/
+
+    expanded_key_next[1407:1152] = expanded_key_temp[255:0];
+    //expanded_key_next[255:0] = expanded_key_temp[255:0];
+    
+    core_state[31:0] = expanded_key_next[1407:1376];
+    //core_state[31:0] = expanded_key_next[255:224];
+    
+    expanded_key_temp[127:0] = expanded_key_temp[255:128];
+    expanded_key_next = expanded_key_next >>128;
+    if(rcon_index==8'h0a)
+        expanded_key_next = expanded_key_next <<128;
+//        end
+//        expanded_key_next[127:0]=expanded_key_in[127:0];
      
      
 	
     end
     
-    assign expanded_key = expanded_key_reg;
+    assign expanded_key_out = expanded_key_reg;
 
     
    
