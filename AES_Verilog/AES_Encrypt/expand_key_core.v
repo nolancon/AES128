@@ -4,13 +4,13 @@
 
 module expand_key_core(
     input wire clk,
-    input wire [1407:0] expanded_key_in,
+    input wire [127:0] key_in,
     input wire [7:0] rcon_index_in,
-   output wire[1407:0] expanded_key_out
+   	output wire[127:0] expanded_key_out
     );
      
     //Internal Signals
-    reg[1407:0] expanded_key_next, expanded_key_reg;
+    reg[127:0] expanded_key_next, expanded_key_reg;
 	
     reg[255:0] expanded_key_temp;
     reg[31:0] core_state;
@@ -29,8 +29,7 @@ module expand_key_core(
    
    rcon_index = rcon_index_in;
 	    
-    expanded_key_next[1151:0]=expanded_key_in[1151:0];
-	expanded_key_temp[127:0]=expanded_key_in[1279:1152];
+	expanded_key_temp[127:0]=key_in[127:0];
 
 //        for(index=0;index<10;index=index+1)
 //        begin
@@ -60,16 +59,16 @@ module expand_key_core(
     expanded_key_temp[255:224]=expanded_key_temp[223:192]^expanded_key_temp[127:96];  
     /********************************************************************************/
 
-    expanded_key_next[1407:1152] = expanded_key_temp[255:0];
-    //expanded_key_next[255:0] = expanded_key_temp[255:0];
+//    expanded_key_next[1407:1152] = expanded_key_temp[255:0];
+    expanded_key_next[127:0] = expanded_key_temp[255:128];
     
-    core_state[31:0] = expanded_key_next[1407:1376];
-    //core_state[31:0] = expanded_key_next[255:224];
+//    core_state[31:0] = expanded_key_next[1407:1376];
+    core_state[31:0] = expanded_key_next[127:96];
     
     expanded_key_temp[127:0] = expanded_key_temp[255:128];
-    expanded_key_next = expanded_key_next >>128;
-    if(rcon_index==8'h0a)
-        expanded_key_next = expanded_key_next <<128;
+//    expanded_key_next = expanded_key_next >>128;
+//    if(rcon_index==8'h0a)
+//        expanded_key_next = expanded_key_next <<128;
 //        end
 //        expanded_key_next[127:0]=expanded_key_in[127:0];
      
