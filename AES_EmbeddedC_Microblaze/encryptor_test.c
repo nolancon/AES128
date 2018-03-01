@@ -47,40 +47,89 @@
 
 #include <stdio.h>
 #include "platform.h"
-#include "xbasic_types.h"
+#include "xil_types.h"
 #include "xparameters.h"
 
-u32 *baseaddr_p = (u32 *)XPAR_ENCRYPTOR_0_S00_AXI_BASEADDR;
+u8 *baseaddr_p = (u8 *)XPAR_ENCRYPTOR_0_S00_AXI_BASEADDR;
+
+//const char *y = (const char*)baseaddr_p;
 
 int main()
 {
 	init_platform();
 
-	xil_printf("Encryption Test\n\r");
+	xil_printf("AES128 Encryption Demo\n\r");
 
-	// Write key inputs to registers 0 - 3
-	*(baseaddr_p+0) = 0x04030201;
-	*(baseaddr_p+1) = 0x08070605;
-	*(baseaddr_p+2) = 0x0C0B0A09;
-	*(baseaddr_p+3) = 0x100F0E0D;
+	//Key
+	*(baseaddr_p+0) = 0x01;
+	*(baseaddr_p+1) = 0x02;
+	*(baseaddr_p+2) = 0x03;
+	*(baseaddr_p+3) = 0x04;
+	*(baseaddr_p+4) = 0x05;
+	*(baseaddr_p+5) = 0x06;
+	*(baseaddr_p+6) = 0x07;
+	*(baseaddr_p+7) = 0x08;
+	*(baseaddr_p+8) = 0x09;
+	*(baseaddr_p+9) = 0x0A;
+	*(baseaddr_p+10) = 0x0B;
+	*(baseaddr_p+11) = 0x0C;
+	*(baseaddr_p+12) = 0x0D;
+	*(baseaddr_p+13) = 0x0E;
+	*(baseaddr_p+14) = 0x0F;
+	*(baseaddr_p+15) = 0x10;
 
-	xil_printf("Key:\t\t0x%08x%08x%08x%08x \n\r", *(baseaddr_p+3),*(baseaddr_p+2),*(baseaddr_p+1),*(baseaddr_p+0));
+	/*********************************************************************************************************/
 
-	// Write plain text inputs to register 4 - 7
-	//Test Plain Text: "Conor Nolan GMIT" -> 0x54494D47206E616C6F4E20726F6E6F43
+	setvbuf(stdin, NULL, _IONBF, 0);
+	int count = 0;
+	for (;;)
+	{
+		for(int i = 16; i < 32; i++)
+		{
+			*(baseaddr_p+i) = getchar();	//assign getchar() value to plain text address space
+			count ++;
+			if (*(baseaddr_p+i) != EOF)
+			{
+				xil_printf("%c", *(baseaddr_p+i));	//print getchar() value
+			}
+			if(count % 16 == 0)						//after every 16 bytes entered, display encryption results
+			{
+				xil_printf("\n\r");
+				xil_printf("Plain Text (ascii): ");
+				for(int i = 16; i < 32; i++)
+				{
+					xil_printf("%c",*(baseaddr_p+i));
+				}
+				xil_printf("\n\r");
 
-	*(baseaddr_p+4) = 0x6F6E6F43;
-	*(baseaddr_p+5) = 0x6F4E2072;
-	*(baseaddr_p+6) = 0x206E616C;
-	*(baseaddr_p+7) = 0x54494D47;
+				xil_printf("Plain Text (hex): ");
+				for(int i = 16; i < 32; i++)
+				{
+					xil_printf("%02x ",*(baseaddr_p+i));
+				}
+				xil_printf("\n\r");
 
- 	xil_printf("Plain Text:\t0x%08x%08x%08x%08x \n\r", *(baseaddr_p+7),*(baseaddr_p+6),*(baseaddr_p+5),*(baseaddr_p+4));
+				xil_printf("Cipher Text (ascii): ");
+				for(int i = 32; i < 48; i++)
+				{
+					xil_printf("%c",*(baseaddr_p+i));
+				}
+				xil_printf("\n\r");
 
-	// Read cipher text output from register 8 - 11
-	xil_printf("Cipher Text:\t0x%08x%08x%08x%08x \n\r", *(baseaddr_p+11),*(baseaddr_p+10),*(baseaddr_p+9),*(baseaddr_p+8));
+				xil_printf("Cipher Text (hex): ");
+				for(int i = 32; i < 48; i++)
+				{
+					xil_printf("%02x ",*(baseaddr_p+i));
+				}
+				xil_printf("\n\r");
+
+				xil_printf("End of test\n\n\r");
+			}
+		}
+	}
+	/*********************************************************************************************************/
 
 
-	xil_printf("End of test\n\n\r");
 
 	return 0;
 }
