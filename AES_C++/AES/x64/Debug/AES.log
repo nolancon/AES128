@@ -1,4 +1,6 @@
-﻿  stdafx.cpp
+﻿  Skipping... (no relevant changes detected)
+  stdafx.cpp
   AES.cpp
-c:\users\cmsno\dropbox\year_5\gitrepos\aes128\aes_c++\aes\aes.cpp(78): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\cmsno\dropbox\year_5\gitrepos\aes128\aes_c++\aes\aes.cpp(139): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  LINK : C:\Users\cmsno\Dropbox\Year_5\GitRepos\AES128\AES_C++\x64\Debug\AES.exe not found or not built by the last incremental link; performing full link
   AES.vcxproj -> C:\Users\cmsno\Dropbox\Year_5\GitRepos\AES128\AES_C++\x64\Debug\AES.exe
