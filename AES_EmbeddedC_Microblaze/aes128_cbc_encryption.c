@@ -50,6 +50,9 @@
 #include "xil_types.h"
 #include "xparameters.h"
 
+void updateBlockChain();
+
+
 u8 *baseaddr_p = (u8 *)XPAR_AES128_CBC_ENCRYPTOR_0_S00_AXI_BASEADDR;
 u16 *baseaddr_p16 = (u16 *)XPAR_AES128_CBC_ENCRYPTOR_0_S00_AXI_BASEADDR;
 
@@ -97,7 +100,7 @@ int main()
 	*(baseaddr_p+31) = 0x10;
 
 	/*********************************************************************************************************/
-
+	xil_printf("\n\r");
 	xil_printf("AES128-CBC Encryption Demo\n\r");
 
 
@@ -105,6 +108,7 @@ int main()
 	int count = 0;
 	for (;;)
 	{
+		xil_printf("\n\r");
 		xil_printf("Initialisation Vector (hex): ");
 		for(int i = 0; i < 16; i++)
 		{
@@ -118,6 +122,8 @@ int main()
 			xil_printf("%02x ",*(baseaddr_p+i));
 		}
 		xil_printf("\n\r");
+		xil_printf("Enter Plain Text (ascii):    ");
+
 		for(int i = 32; i < 48; i++)
 		{
 			*(baseaddr_p+i) = getchar();	//assign getchar() value to plain text address space
@@ -128,12 +134,6 @@ int main()
 			}
 			if(count % 16 == 0)						//after every 16 bytes entered, display encryption results
 			{
-				xil_printf("\n\r");
-				xil_printf("Plain Text (ascii):          ");
-				for(int i = 32; i < 48; i++)
-				{
-					xil_printf("%c",*(baseaddr_p+i));
-				}
 				xil_printf("\n\r");
 
 				xil_printf("Plain Text (hex):            ");
@@ -154,8 +154,10 @@ int main()
 				for(int i = 48; i < 64; i++)
 				{
 					xil_printf("%02x ",*(baseaddr_p+i));
-					*(baseaddr_p+(i-48)) = *(baseaddr_p+i);	//replace Init Vector with Cipher Text (BLOCKCHAIN)
 				}
+
+				updateBlockChain();	//replace Initialisation Vector with Cipher Text
+
 				xil_printf("\n\r");
 
 				xil_printf("End of test\n\n\r");
@@ -165,8 +167,44 @@ int main()
 	}
 	/*********************************************************************************************************/
 
-
-
-
 	return 0;
+}
+
+void updateBlockChain()
+{
+	u8 vec1,vec2,vec3, vec4,vec5,vec6,vec7,vec8, vec9,vec10,vec11,vec12,vec13,vec14, vec15,vec16;
+
+	vec1 = *(baseaddr_p+48);
+	vec2 = *(baseaddr_p+49);
+	vec3 = *(baseaddr_p+50);
+	vec4 = *(baseaddr_p+51);
+	vec5 = *(baseaddr_p+52);
+	vec6 = *(baseaddr_p+53);
+	vec7 = *(baseaddr_p+54);
+	vec8 = *(baseaddr_p+55);
+	vec9 = *(baseaddr_p+56);
+	vec10 = *(baseaddr_p+57);
+	vec11 = *(baseaddr_p+58);
+	vec12 = *(baseaddr_p+59);
+	vec13 = *(baseaddr_p+60);
+	vec14 = *(baseaddr_p+61);
+	vec15 = *(baseaddr_p+62);
+	vec16 = *(baseaddr_p+63);
+
+	*(baseaddr_p) = vec1;
+	*(baseaddr_p+1) = vec2;
+	*(baseaddr_p+2) = vec3;
+	*(baseaddr_p+3) = vec4;
+	*(baseaddr_p+4) = vec5;
+	*(baseaddr_p+5) = vec6;
+	*(baseaddr_p+6) = vec7;
+	*(baseaddr_p+7) = vec8;
+	*(baseaddr_p+8) = vec9;
+	*(baseaddr_p+9) = vec10;
+	*(baseaddr_p+10) = vec11;
+	*(baseaddr_p+11) = vec12;
+	*(baseaddr_p+12) = vec13;
+	*(baseaddr_p+13) = vec14;
+	*(baseaddr_p+14) = vec15;
+	*(baseaddr_p+15) = vec16;
 }
