@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 
-module aes128_cbc_top(
+module aes128_cbc_dec_top(
     input wire clk,
     input wire reset,
     

@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module aes128_cbc_top_tb();
+module aes128_cbc_dec_top_tb();
     
     localparam T = 10;
     reg clk, reset;
@@ -30,7 +30,7 @@ module aes128_cbc_top_tb();
 	wire [127:0] cipher_text;
 	wire [127:0] decrypted_plain_text;	
 	
-    aes128_cbc_top i_aes128_top(
+    aes128_cbc_dec_top i_aes128_cbc_dec_top(
 	    . clk(clk),
 	    . reset(reset),
 	    . key_0(key[31:0]),
@@ -41,15 +41,14 @@ module aes128_cbc_top_tb();
 	    . vector_1(vector[63:32]),
 	    . vector_2(vector[95:64]),
 	    . vector_3(vector[127:96]),	    
-	    . plain_text_0(plain_text[31:0]),
-	    . plain_text_1(plain_text[63:32]),
-	    . plain_text_2(plain_text[95:64]),
-	    . plain_text_3(plain_text[127:96]),	 
-//	    . expanded_key(expanded_key),
 	    . cipher_text_0(cipher_text[31:0]),
 	    . cipher_text_1(cipher_text[63:32]),
 	    . cipher_text_2(cipher_text[95:64]),
-	    . cipher_text_3(cipher_text[127:96]));
+	    . cipher_text_3(cipher_text[127:96]),
+	    . decrypted_plain_text_0(decrypted_plain_text[31:0]),
+	    . decrypted_plain_text_1(decrypted_plain_text[63:32]),
+	    . decrypted_plain_text_2(decrypted_plain_text[95:64]),
+	    . decrypted_plain_text_3(decrypted_plain_text[127:96]));
 	
 
     always
@@ -67,11 +66,12 @@ module aes128_cbc_top_tb();
         reset = 1'b0;
     end
     
+    assign vector = 128'h132f5f00c90d7f84edda7ac61de0082e;
+//    assign vector = 128'h00000000000000000000000000000000;
+
     assign key = 128'h100F0E0D0C0B0A090807060504030201;
     
-    assign vector = 128'h0102030405060708090A0B0C0D0E0F10; 
-    
-    assign plain_text = 128'h54494d47206e616c6f4e20726f6e6f43;
+    assign cipher_text = 128'h46d2d2cb06f40c41b08b25b97a6fa062;
     
 //    assign plain_text = 128'hF0EFEEEDECEBEAE9E8E7E6E5E4E3E2E1; 
 //    assign plain_text = 128'hE0DFDEDDDCDBDAD9D8D7D6D5D4D3D2D1; 
