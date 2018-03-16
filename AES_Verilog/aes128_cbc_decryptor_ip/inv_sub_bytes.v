@@ -3,6 +3,7 @@
 
 module inv_sub_bytes(
     input wire clk,
+    input wire reset,    
     input wire [127:0] state_isb_in,
     output wire [127:0] state_isb_out
 	);
@@ -10,10 +11,10 @@ module inv_sub_bytes(
 	reg [127:0] state_isb_out_reg; 
 	reg [127:0] state_isb_out_next;
 	
-	always @(posedge clk)
-    begin
-        state_isb_out_reg <= state_isb_out_next;
-    end
+//	always @(posedge clk)
+//    begin
+//        state_isb_out_reg <= state_isb_out_next;
+//    end
 	
 	always @*
     begin
@@ -39,7 +40,7 @@ module inv_sub_bytes(
         state_isb_out_next[127:120] = inv_sbox(state_isb_out_next[127:120]);  //15
 	end
     
-    assign state_isb_out = state_isb_out_reg;
+    assign state_isb_out = state_isb_out_next;
     
  function [7:0] inv_sbox;
 	    input[7:0] address;

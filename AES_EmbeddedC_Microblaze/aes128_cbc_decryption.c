@@ -53,8 +53,10 @@
 void updateBlockChain();
 
 
-u8 *baseaddr_p = (u8 *)XPAR_AES128_CBC_ENCRYPTOR_0_S00_AXI_BASEADDR;
+u8 *baseaddr_p = (u8 *)XPAR_AES128_CBC_DECRYPTOR_IP_0_S00_AXI_BASEADDR;
 
+
+//const char *y = (const char*)baseaddr_p;
 
 int main()
 {
@@ -97,14 +99,11 @@ int main()
 	*(baseaddr_p+30) = 0x0F;
 	*(baseaddr_p+31) = 0x10;
 
-	/*********************************************************************************************************/
-	xil_printf("\n\rAES128-CBC Encryption Demo\n\r");
-
+/*******************************************************************************************/
+	xil_printf("\n\rAES128-CBC Decryption Demo\n\r");
 
 	setvbuf(stdin, NULL, _IONBF, 0);
-	int count = 0;
 	int block = 1;
-
 	for (;;)
 	{
 		xil_printf("\n\rBlock Cipher %i", block);
@@ -122,74 +121,70 @@ int main()
 			xil_printf("%02x ",*(baseaddr_p+i));
 		}
 		xil_printf("\n\r");
-		xil_printf("Enter Plain Text (ascii):     ");
+
+		xil_printf("Enter Cipher Text (hex):     \n\r");	//print getchar() value
 
 		for(int i = 32; i < 48; i++)
 		{
-			*(baseaddr_p+i) = getchar();	//assign getchar() value to plain text address space
-			count ++;
-			if (*(baseaddr_p+i) != EOF)
-			{
-				xil_printf("%c", *(baseaddr_p+i));	//print getchar() value
-			}
-			if(count % 16 == 0)						//after every 16 bytes entered, display encryption results
-			{
-				xil_printf("\n\r");
-
-				xil_printf("Plain Text (hex):             ");
-				for(int i = 32; i < 48; i++)
-				{
-					xil_printf("%02x ",*(baseaddr_p+i));
-				}
-				xil_printf("\n\r");
-
-				xil_printf("Cipher Text (ascii):          ");
-				for(int i = 48; i < 64; i++)
-				{
-					xil_printf("%c",*(baseaddr_p+i));
-				}
-				xil_printf("\n\r");
-
-				xil_printf("Cipher Text (hex):            ");
-				for(int i = 48; i < 64; i++)
-				{
-					xil_printf("%02x ",*(baseaddr_p+i));
-				}
-
-				updateBlockChain();	//replace Initialisation Vector with Cipher Text
-
-				xil_printf("\n\r");
-
-				xil_printf("End of test\n\n\r");
-			}
+			scanf("%hhx",&(*(baseaddr_p+i)));
 		}
 
+		xil_printf("Cipher Text (ascii):          ");
+		for(int i = 32; i < 48; i++)
+		{
+			xil_printf("%c",*(baseaddr_p+i));
+		}
+		xil_printf("\n\r");
+
+		xil_printf("Cipher Text (hex):            ");
+		for(int i = 32; i < 48; i++)
+		{
+			xil_printf("%02x ",*(baseaddr_p+i));
+		}
+		xil_printf("\n\r");
+
+		xil_printf("Decrypted Plain Text (ascii): ");
+		for(int i = 48; i < 64; i++)
+		{
+			xil_printf("%c",*(baseaddr_p+i));
+		}
+		xil_printf("\n\r");
+
+		xil_printf("Decrypted Plain (hex):        ");
+		for(int i = 48; i < 64; i++)
+		{
+			xil_printf("%02x ",*(baseaddr_p+i));
+		}
+		xil_printf("\n\r");
+
+		xil_printf("End of test\n\n\r");
+		updateBlockChain();
 	}
-	/*********************************************************************************************************/
 
 	return 0;
 }
+
 
 void updateBlockChain()
 {
 	u8 vec1,vec2,vec3, vec4,vec5,vec6,vec7,vec8, vec9,vec10,vec11,vec12,vec13,vec14, vec15,vec16;
 
-	vec1 = *(baseaddr_p+48);
-	vec2 = *(baseaddr_p+49);
-	vec3 = *(baseaddr_p+50);
-	vec4 = *(baseaddr_p+51);
-	vec5 = *(baseaddr_p+52);
-	vec6 = *(baseaddr_p+53);
-	vec7 = *(baseaddr_p+54);
-	vec8 = *(baseaddr_p+55);
-	vec9 = *(baseaddr_p+56);
-	vec10 = *(baseaddr_p+57);
-	vec11 = *(baseaddr_p+58);
-	vec12 = *(baseaddr_p+59);
-	vec13 = *(baseaddr_p+60);
-	vec14 = *(baseaddr_p+61);
-	vec15 = *(baseaddr_p+62);
-	vec16 = *(baseaddr_p+63);
+	vec1 = *(baseaddr_p+32);
+	vec2 = *(baseaddr_p+33);
+	vec3 = *(baseaddr_p+34);
+	vec4 = *(baseaddr_p+35);
+	vec5 = *(baseaddr_p+36);
+	vec6 = *(baseaddr_p+37);
+	vec7 = *(baseaddr_p+38);
+	vec8 = *(baseaddr_p+39);
+	vec9 = *(baseaddr_p+40);
+	vec10 = *(baseaddr_p+41);
+	vec11 = *(baseaddr_p+42);
+	vec12 = *(baseaddr_p+43);
+	vec13 = *(baseaddr_p+44);
+	vec14 = *(baseaddr_p+45);
+	vec15 = *(baseaddr_p+46);
+	vec16 = *(baseaddr_p+47);
 
 	*(baseaddr_p) = vec1;
 	*(baseaddr_p+1) = vec2;

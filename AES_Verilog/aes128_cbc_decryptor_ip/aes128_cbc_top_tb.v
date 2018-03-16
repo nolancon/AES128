@@ -19,24 +19,37 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module AES_top_tb();
+module aes128_cbc_top_tb();
     
     localparam T = 10;
-    reg clk, rst;
-    wire [127:0] key;
+    reg clk, reset;
+	wire [127:0] vector;	
+	wire [127:0] key;
     wire [1407:0] expanded_key;
 	wire [127:0] plain_text;
 	wire [127:0] cipher_text;
-	wire [127:0] decrypted_plain_text;
-
-    
-    AES_top i_AES_top(
-	    . clk(clk), 
-	    . key(key), 
-	    . plain_text(plain_text),
-	    . expanded_key(expanded_key), 
-	    . cipher_text(cipher_text),
-	    . decrypted_plain_text(decrypted_plain_text));
+	wire [127:0] decrypted_plain_text;	
+	
+    aes128_cbc_top i_aes128_top(
+	    . clk(clk),
+	    . reset(reset),
+	    . key_0(key[31:0]),
+	    . key_1(key[63:32]),
+	    . key_2(key[95:64]),
+	    . key_3(key[127:96]),
+	    . vector_0(vector[31:0]),
+	    . vector_1(vector[63:32]),
+	    . vector_2(vector[95:64]),
+	    . vector_3(vector[127:96]),	    
+	    . cipher_text_0(cipher_text[31:0]),
+	    . cipher_text_1(cipher_text[63:32]),
+	    . cipher_text_2(cipher_text[95:64]),
+	    . cipher_text_3(cipher_text[127:96]),
+	    . decrypted_plain_text_0(decrypted_plain_text[31:0]),
+	    . decrypted_plain_text_1(decrypted_plain_text[63:32]),
+	    . decrypted_plain_text_2(decrypted_plain_text[95:64]),
+	    . decrypted_plain_text_3(decrypted_plain_text[127:96]));
+	
 
     always
     begin
@@ -48,15 +61,18 @@ module AES_top_tb();
     
     initial
     begin
-        rst = 1'b1;
+        reset = 1'b1;
         #(T/2);
-        rst = 1'b0;
+        reset = 1'b0;
     end
     
-    assign  key = 128'h100F0E0D0C0B0A090807060504030201;
-    assign plain_text = 128'h54494D47206E616C6F4E20726F6E6F43;
+    assign vector = 128'h132f5f00c90d7f84edda7ac61de0082e;
+//    assign vector = 128'h00000000000000000000000000000000;
+
+    assign key = 128'h100F0E0D0C0B0A090807060504030201;
     
-//    assign plain_text = 128'h00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1; 
+    assign cipher_text = 128'h46d2d2cb06f40c41b08b25b97a6fa062;
+    
 //    assign plain_text = 128'hF0EFEEEDECEBEAE9E8E7E6E5E4E3E2E1; 
 //    assign plain_text = 128'hE0DFDEDDDCDBDAD9D8D7D6D5D4D3D2D1; 
 //    assign plain_text = 128'hD0CFCECDCCCBCAC9C8C7C6C5C4C3C2C1; 

@@ -3,6 +3,8 @@
 
 module decrypt_top(
     input wire clk,
+    input wire reset,   
+    input wire [127:0] vector,    
     input wire [127:0] key,
     input wire [127:0] round1_key, 
     input wire [127:0] round2_key, 
@@ -28,7 +30,7 @@ module decrypt_top(
 	wire [127:0] dec_state_round8_in, dec_state_round8_out;
 	wire [127:0] dec_state_round9_in, dec_state_round9_out;
 	wire [127:0] dec_state_round10_in, dec_state_round10_out;
-	wire [127:0] dec_add_key_in, dec_add_key_out;
+	wire [127:0] dec_add_key_out, dec_add_vector;
 	
 		
 	reg [127:0] dec_state_round1_reg, dec_state_round1_next;
@@ -41,7 +43,6 @@ module decrypt_top(
 	reg [127:0] dec_state_round8_reg, dec_state_round8_next;
 	reg [127:0] dec_state_round9_reg, dec_state_round9_next;
 	reg [127:0] dec_state_round10_reg, dec_state_round10_next;
-	reg [127:0] dec_add_key_reg, dec_add_key_next;
 	
 	
 	always @(posedge clk)
@@ -56,7 +57,6 @@ module decrypt_top(
 	    dec_state_round8_reg <= dec_state_round8_next;
 	    dec_state_round9_reg <= dec_state_round9_next;
 	    dec_state_round10_reg <= dec_state_round10_next;
-	    dec_add_key_reg <= dec_add_key_next;
     end
 	
 	always @*
@@ -72,87 +72,104 @@ module decrypt_top(
 	    dec_state_round8_next = dec_state_round8_out;
 	    dec_state_round9_next = dec_state_round9_out;
 	    dec_state_round10_next = dec_state_round10_out;
-	    dec_add_key_next = dec_add_key_out;
     end
     
     assign dec_state_round2_in = dec_state_round1_reg;
     assign dec_state_round3_in = dec_state_round2_reg;
     assign dec_state_round4_in = dec_state_round3_reg;
- 	assign dec_state_round5_in = dec_state_round4_reg;
+	assign dec_state_round5_in = dec_state_round4_reg;
     assign dec_state_round6_in = dec_state_round5_reg;
     assign dec_state_round7_in = dec_state_round6_reg;
     assign dec_state_round8_in = dec_state_round7_reg;
     assign dec_state_round9_in = dec_state_round8_reg;
     assign dec_state_round10_in = dec_state_round9_reg;
-    assign dec_add_key_in = dec_state_round10_reg;
-    assign decrypted_plain_text = dec_add_key_reg;
+
+	assign decrypted_plain_text = dec_add_vector;
     
 	
 
 	decrypt_initial_round i_decrypt_initial_round(
 			. clk(clk), 
+			. reset(reset),
 			. round_key(round10_key),
 			. state_in(cipher_text),
 			. state_round(dec_state_round1_out));
     
     decrypt_round i_decrypt_round_2(
 		. clk(clk), 
+		. reset(reset),
 		. round_key(round9_key),
 		. dec_state_in(dec_state_round2_in),
 		. dec_state_round(dec_state_round2_out));
     
     decrypt_round i_decrypt_round_3(
 		. clk(clk), 
+		. reset(reset),
 		. round_key(round8_key),
 		. dec_state_in(dec_state_round3_in),
 		. dec_state_round(dec_state_round3_out));
     
     decrypt_round i_decrypt_round_4(
 		. clk(clk), 
+		. reset(reset),
 		. round_key(round7_key),
 		. dec_state_in(dec_state_round4_in),
 		. dec_state_round(dec_state_round4_out));
     
     decrypt_round i_decrypt_round_5(
-		. clk(clk), 
+		. clk(clk),
+		. reset(reset),		
 		. round_key(round6_key),
 		. dec_state_in(dec_state_round5_in),
 		. dec_state_round(dec_state_round5_out));
     
     decrypt_round i_decrypt_round_6(
 		. clk(clk), 
+		. reset(reset),		
 		. round_key(round5_key),
 		. dec_state_in(dec_state_round6_in),
 		. dec_state_round(dec_state_round6_out));
     
     decrypt_round i_decrypt_round_7(
 		. clk(clk), 
+		. reset(reset),
 		. round_key(round4_key),
 		. dec_state_in(dec_state_round7_in),
 		. dec_state_round(dec_state_round7_out));
     
     decrypt_round i_decrypt_round_8(
 		. clk(clk), 
+		. reset(reset),		
 		. round_key(round3_key),
 		. dec_state_in(dec_state_round8_in),
 		. dec_state_round(dec_state_round8_out));
     
     decrypt_round i_decrypt_round_9(
-		. clk(clk), 
+		. clk(clk),
+		. reset(reset),		
 		. round_key(round2_key),
 		. dec_state_in(dec_state_round9_in),
 		. dec_state_round(dec_state_round9_out));
     
     decrypt_round i_decrypt_round_10(
-		. clk(clk), 
+		. clk(clk),
+		. reset(reset),		
 		. round_key(round1_key),
 		. dec_state_in(dec_state_round10_in),
 		. dec_state_round(dec_state_round10_out));
     
     add_round_key i_add_round_key(
 	    . clk(clk),
+		. reset(reset),	    
 	    . round_key(key),
-	    . state_ark_in(dec_add_key_in),
+	    . state_ark_in(dec_state_round10_reg),
 	    . state_ark_out(dec_add_key_out));
+    
+    add_vector i_add_vector(
+	    . clk(clk),
+	    . reset(reset),
+	    . vector(vector),
+	    . add_vector_in(dec_add_key_out),
+	    . add_vector_out(dec_add_vector));
     
 	endmodule
