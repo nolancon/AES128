@@ -29,6 +29,8 @@ RTL = Verilog to implement AES128-ECB & AES128-CBC:
 				-> add_round_key
 	Decryption:
 	-> aes128_cbc_decrypt_top
+		-> expand_key
+		-> key_scheduler
 		-> decrypt_top
 			-> decrypt_initial_round
 				-> add_round_key
